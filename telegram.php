@@ -132,7 +132,7 @@ var_dump($to_id);
                     //     $bot->sendMessage($_GET['id'] ?? $array['id'], $msg);
                     //     $bot->run();
                     // }
-
+                    var_dump($v);
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
                             // 'text' => 'no super var',
