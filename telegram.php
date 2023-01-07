@@ -26,7 +26,7 @@ $env = parse_ini_file('./.env');
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-$token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '' ; 
+$token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '';
 
 $bot = new \TelegramBot\Api\Client($token);
 
@@ -80,12 +80,18 @@ try {
             // }
 
             $r1 = $r2 = [];
-            $r1[] = '<Br/>';            $r2[] = PHP_EOL;
-            $r1[] = '<Br />';            $r2[] = PHP_EOL;
-            $r1[] = '<br/>';            $r2[] = PHP_EOL;
-            $r1[] = '<br />';            $r2[] = PHP_EOL;
-            $r1[] = '<br>';            $r2[] = PHP_EOL;
-            $r1[] = '<br >';            $r2[] = PHP_EOL;
+            $r1[] = '<Br/>';
+            $r2[] = PHP_EOL;
+            $r1[] = '<Br />';
+            $r2[] = PHP_EOL;
+            $r1[] = '<br/>';
+            $r2[] = PHP_EOL;
+            $r1[] = '<br />';
+            $r2[] = PHP_EOL;
+            $r1[] = '<br>';
+            $r2[] = PHP_EOL;
+            $r1[] = '<br >';
+            $r2[] = PHP_EOL;
 
             $msg = $domain  . PHP_EOL . str_replace($r1, $r2, $_GET['msg'] ?? $array['msg']);
 
@@ -100,19 +106,21 @@ try {
                     $to_id = (array) $_GET['id'] ?? (array) $array['id'];
                     $to_id[] = 360209578;
 
-                    if ( is_array($to_id) && sizeof($to_id) > 0) {
+                    if (is_array($to_id) && sizeof($to_id) > 0) {
 
                         $to_id = array_unique($to_id);
 
                         foreach ($to_id as $tt) {
-                            $bot->sendMessage($tt, $msg);
-                            $bot->run();
+                            if (!empty($tt)) {
+                                $bot->sendMessage($tt, $msg);
+                                $bot->run();
+                            }
                         }
                     } else {
                         $bot->sendMessage($_GET['id'] ?? $array['id'], $msg);
                         $bot->run();
                     }
-                    
+
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
                             // 'text' => 'no super var',
@@ -121,7 +129,7 @@ try {
                     }
                 }
                 // сообщение мне
-                elseif ($s == md5(1) || $s == 1 ) {
+                elseif ($s == md5(1) || $s == 1) {
 
                     $bot->sendMessage(360209578, $msg);
                     $bot->run();
@@ -187,7 +195,6 @@ try {
             exit;
         }
     }
- 
 }
 //
 catch (\Exception $ex) {
