@@ -1,0 +1,315 @@
+Options All -ExecCGI -Indexes -Includes +FollowSymLinks
+
+DirectoryIndex index.php
+
+ServerSignature Off
+AddDefaultCharset UTF-8
+
+#Header always set Access-Control-Allow-Origin: "http://localhost"
+#Header always set Access-Control-Allow-Methods "POST, GET, PUT, DELETE, OPTIONS"
+#Header always set Access-Control-Allow-Headers "X-Requested-With, content-type" 
+
+# Когда нет доступа к php.ini
+#
+# С помощью .htaccess мы также можем управлять рядом настроек PHP. 
+# На виртуальном хостинге, как правило, нет возможности изменять настройки php.ini. 
+# Чаще всего этого и не требуется. Но все же есть ряд опций контроль над которыми может нам быть полезен. 
+# Например, увеличить лимит на загрузку файлов, или лимит передачи данным методом POST.
+#
+#<ifModule mod_php.c>
+#  php_value	upload_max_filesize	32M
+#  php_value	post_max_size		10M
+#  php_value	default_charset utf-8
+#  php_value	max_execution_time 200
+#</ifModule>
+
+
+#AddType application/x-javascript .js
+#AddType text/css .css
+#AddType text/xml .xml
+#AddType application/octet-stream .doc .mov .avi .pdf .xls 
+
+# выдача файлов в сжатом формате / так быстрее
+#
+#<ifModule mod_deflate.c>
+#	AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
+#</ifModule>
+#<IfModule mod_gzip.c>
+#	mod_gzip_on         Yes
+#	mod_gzip_dechunk    Yes
+#	mod_gzip_item_include file		\.(html?|txt|css|js|php|pl)$
+#	mod_gzip_item_include mime		^text\.*
+#	mod_gzip_item_include mime		^application/x-javascript.*
+#	mod_gzip_item_exclude mime		^image\.*
+#	mod_gzip_item_exclude rspheader	^Content-Encoding:.*gzip.*
+#</IfModule>
+
+
+
+php_flag display_errors On
+#показать все ошибки кроме предупреждений (Notice)
+#php_value error_reporting "E_ALL"
+php_value error_reporting 7
+
+php_value log_errors 3
+#php_value error_log /var/www/di4basa1/data/www/site/logs/htaccess.error.log
+#php_value error_log /var/www/di4basa2/data/www/site/logs/htaccess.error.log
+#php_value error_log /var/www/di4basa3/data/www/site/logs/htaccess.error.log
+php_value error_log /var/www/di4dev/data/www/site/logs/htaccess.error.log
+#php_value error_log C:\OpenServer18\domains\acms3\error.log
+
+#AddDefaultCharset UTF-8
+
+
+
+AddType text/html nyos
+# AddType text/html hhtml
+
+php_value session.gc_maxlifetime 72000
+#php_value session.cookie_lifetime 72000
+
+#php_value session.cookie_lifetime 2
+php_value session.cookie_lifetime 72000
+
+#<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|svg|css|pdf)$">
+##Header set Cache-Control "max-age=72000"
+#Header set Cache-Control "max-age=2"
+#</FilesMatch>
+
+
+
+
+# кеширование файлов есть 2 модуля за это отвечающих
+#
+#<ifModule mod_headers.c>
+#	#кэшировать html и htm файлы на один день
+#	<FilesMatch "\.(html|htm)$">
+#		Header set Cache-Control "max-age=43200"
+#	</FilesMatch>
+#	#кэшировать css, javascript и текстовые файлы на одну неделю
+#	<FilesMatch "\.(js|css|txt)$">
+#		Header set Cache-Control "max-age=604800"
+#	</FilesMatch>
+#	#кэшировать флэш и изображения на месяц
+#	<FilesMatch "\.(flv|swf|ico|gif|jpg|jpeg|png)$">
+#		Header set Cache-Control "max-age=2592000"
+#	</FilesMatch>
+#	#отключить кэширование
+#	<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+#		Header unset Cache-Control
+#	</FilesMatch>
+#</IfModule>
+
+<ifModule mod_expires.c>
+    ExpiresActive On
+    #по умолчанию кеш в 5 секунд
+    ExpiresDefault "access plus 5 seconds"
+
+#	#кэшировать флэш и изображения на месяц
+#	ExpiresByType image/x-icon "access plus 2592000 seconds"
+#	ExpiresByType image/jpeg "access plus 2592000 seconds"
+#	ExpiresByType image/png "access plus 2592000 seconds"
+#	ExpiresByType image/gif "access plus 2592000 seconds"
+#	ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+#	#кэшировать css, javascript и текстовые файлы на одну неделю
+#	ExpiresByType text/css "access plus 604800 seconds"
+#	ExpiresByType text/javascript "access plus 604800 seconds"
+#	ExpiresByType application/javascript "access plus 604800 seconds"
+#	ExpiresByType application/x-javascript "access plus 604800 seconds"
+#	#кэшировать html и htm файлы на один день
+#	ExpiresByType text/html "access plus 43200 seconds"
+#	#кэшировать xml файлы на десять минут
+#	ExpiresByType application/xhtml+xml "access plus 600 seconds"
+
+    ExpiresByType text/css "modification plus 360000 seconds"
+    ExpiresByType image/jpeg "modification plus 360000 seconds"
+    ExpiresByType image/gif "modification plus 360000 seconds"
+    ExpiresByType image/x-ico "modification plus 360000 seconds"
+    ExpiresByType image/png "modification plus 360000 seconds"
+    ExpiresByType image/png "modification plus 360000 seconds"
+    ExpiresByType text/javascript "modification plus 360000 seconds"
+</ifModule>
+
+
+
+
+
+#Для 400-х ошибок можно использовать и динамические страницы на php. 
+#А вот для 500 лучше сделать на html и js. Это часть ошибок обычно связана 
+#с ошибками сервера (в большинстве случаев) и php или cgi как правило в такой ситуации не работают.
+#
+## Bad Rquest
+#ErrorDocument 400 /400.html
+## Authorization Required
+#ErrorDocument 401 /401.html
+## Forbidden
+#ErrorDocument 403 /403.html
+## Not found
+#ErrorDocument 404 /404.html
+## Method Not Allowed
+#ErrorDocument 405 /405.html
+## Request Timed Out
+#ErrorDocument 408 /408.html
+## Request URI Too Long
+#ErrorDocument 414 /414.html
+## Internal Server Error
+#ErrorDocument 500 /500.html
+## Not Implemented
+#ErrorDocument 501 /501.html
+## Bad Gateway 
+#ErrorDocument 502 /502.html
+## Service Unavailable 
+#ErrorDocument 503 /503.html
+## Gateway Timeout
+#ErrorDocument 504 /504.html
+
+
+
+
+
+
+
+
+
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine on
+
+
+
+
+# нам нужно извлечь значение старого параметра,
+# чтобы потом его передать в RewriteRule
+RewriteCond %{QUERY_STRING} ^code=(.*)$ [NC]
+# теперь значение value находится у нас в щаблоне %1
+# RewriteRule ^vazniy-razdel\.php$ /new-address.php?prm=%1 [R=301,L]
+RewriteRule ^didrive/--(.*)--/(aut_vk).php(.*)$    /vendor/didrive/base/ajax.aut_vk.php?redirect_go=$1&code=%1 [L]
+
+# /didrive/aut_vk/--bibi.dev.uralweb.info--/?code=162a55e8c1bf4ae3ae
+    
+
+   # RewriteRule ^didrive/aut_vk/--(.*)--/?(.*)$    /vendor/didrive/base/ajax.aut_vk.php?v=2&redirect_go=$1&$2 [L]
+
+    #RewriteRule ^didrive/aut_vk/(.*)$    /vendor/didrive/base/ajax.aut_vk.php?v=3&$1 [L]
+
+
+
+
+
+#    RewriteRule ^vendor/(.*)ajax.php$        /vendor/$1ajax.php [L]
+
+    RewriteRule ^robots.txt$	/all/robots.php [L]
+
+    RewriteRule ^(.*)\.sl3$	/ [R=301,L]
+
+    RewriteRule ^didrive-api/(.*)/(.*)/(.*)$	/vendor/didrive_api/$1/$2/ajax.php?$3 [L]
+
+
+# изменяем и режем картинки
+
+#    RewriteRule ^didrive-img/min/(.*)/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/base/ajax.php?folder=$1&type=$2&w=$3&uri=$4.$5 [L]
+    RewriteRule ^di-img/(.*)/(.*)/(.*)/(.*)/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=3&type=$1&w=$2&uri=$3/$4/$5.$6 [L]
+
+    #RewriteRule ^di-img/(.*)/(.*)-(.*)/(.*)/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=211&type=$1&w=$2&h=$3&uri=$4/$5.$6 [L]
+    RewriteRule ^di-img/(min|fix_w|kv_fill|)/([0-9]+)-([0-9]+)/(.*)/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=21&type=$1&w=$2&h=$3&uri=$4/$5.$6 [L]
+    RewriteRule ^di-img/(.*)/(.[0-9])-(.[0-9])/(.*)/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=2&type=$1&w=$2&uri=$3/$4.$5 [L]
+    RewriteRule ^di-img/(.*)/(.*)/(.*)/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=2&type=$1&w=$2&uri=$3/$4.$5 [L]
+
+    RewriteRule ^di-img/(.*)/(.[0-9])-(.[0-9])/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=1&type=$1&w=$2&h=$3&uri=$4.$5 [L]
+    RewriteRule ^di-img/(.*)/(.*)/(.*)\.(webp|gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/vendor/didrive/f/img.ajax.php?t=0&type=$1&w=$2&uri=$3.$4 [L]
+
+    RewriteRule ^didra-nyos/min/w/(.*)/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/service/show.edit.image.run.php?type=min&w_min=$1&uri=$2/$3/$4/$5.$6 [L]
+    RewriteRule ^didra-nyos/min/w/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/service/show.edit.image.run.php?type=min&w_min=$1&uri=$2/$3/$4.$5 [L]
+    RewriteRule ^didra-nyos/min/w/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/service/show.edit.image.run.php?type=min&w_min=$1&uri=$2/$3.$4 [L]
+    RewriteRule ^didra-nyos/min/w/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/service/show.edit.image.run.php?type=min&w_min=$1&uri=$2.$3 [L]
+
+
+# jpg с изменёнением размера
+
+    # мы правы короткая ссылка на петицию серв
+    #RewriteCond %{HTTP_HOST} ^xn--80ae2amf8de\.xn--p1ai$
+    #RewriteRule ^([0-9]+)/$	/index.php?level=002iniciative&option=peticii&ext1=$1 [L]
+
+    # мы правы короткая ссылка на петицию локал
+    #RewriteCond %{HTTP_HOST} ^pravu\.a2$
+    #RewriteRule ^([0-9]+)/$	/index.php?level=002iniciative&option=peticii&ext1=$1 [L]
+
+    #RewriteRule ^robots\.txt$	/robots.php [L]
+
+#    RewriteRule ^robots\.txt$	/0.service/robots.php [L]
+#    RewriteRule ^sitemap\.xml$	/0.service/sitemap.xml.php [L]
+#    RewriteRule ^/0.service/(.*)$	/0.service/$1 [L]
+
+    # не работает вариант
+    # RewriteRule ^uralweb-image/(.*)-([0-9])-([0-9])-([0-9])/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$ /0.service/show2.php?type=$1&q=$2&w=$3&h=$4&show_info2=1&rewrite2=1&uri=/$5.$6 [L]
+
+    # get_file
+    # http://aspik.a2/get_file/%D0%97%D0%B0%D0%BF%D1%80%D0%BE%D1%81_%%B8.pdf.pdf/20f4bcfa5fce0e56a94cb49a316a2203-||-/9.site/kl1801sert_aspik/download/files/pr_24_1111111111/proektnaya_dokumentatsiya_5/razdel_2__shema_plan_7/24.180222031526.zapros_perechnya_nalogovyih_de.pdf
+    # RewriteRule ^get_file/(.*)/(.*)----(.*)$	/0.service/file.get.php?s=$2&name=$1&file=$3 [L]
+
+    #RewriteRule ^9\.site/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/9.site/$1.$2 [L]
+
+    # RewriteRule ^(.*)ajax\.php$	/$1ajax.php [L]
+
+    #http://мыправы.рф/sys.image.jpg.php?folder=kl1706mu_pravu&type=q&w=400&uri=media/17092506533919989294_1906317446306727_3206468401413561963_n_jp.96.jpg
+
+#    RewriteRule ^nyos-get/s(.*)/(.*)$	/0.service/file.get.php?s=$1&uri=$2 [L]
+#    RewriteRule ^nyos-get-file/(.*)/(.*)\.\.\.(.*)$	/0.service/file.get.php?s=$1&name=$2&file=$3 [L]
+#    RewriteRule ^nyos-image/q-(.*)-(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&h=$2&uri=$3.$4 [L]
+
+
+    # https://бу72.рф/0.service/show2.php?type=p&q=80&w=700&h=700&show_info2=1&rewrite2=1&uri=/v/21_5_180911052519.jpg
+
+    # RewriteRule ^nyos-image/q-(.*)-(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&h=$2&uri=$3.$4 [L]
+    # /www/site/9.site/my1808bu72/download/didra-nyos/p-700x700/v
+
+
+
+
+
+#    RewriteRule ^didra-nyos/min/w/(.*)/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/0.service/show.edit.image.run.php?type=min&w_min=$1&uri=$2/$3/$4/$5.$6 [L]
+#    RewriteRule ^didra-nyos/min/w/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/0.service/show.edit.image.run.php?type=min&w_min=$1&uri=$2/$3/$4.$5 [L]
+#    RewriteRule ^didra-nyos/min/w/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/0.service/show.edit.image.run.php?type=min&w_min=$1&uri=$2/$3.$4 [L]
+#    RewriteRule ^didra-nyos/min/w/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/0.service/show.edit.image.run.php?type=min&w_min=$1&uri=$2.$3 [L]
+
+
+#    RewriteRule ^nyos-image/(.*)-(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&uri=$3/$4/$5.$6 [L]
+#    RewriteRule ^nyos-image/(.*)-(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&uri=$3/$4.$5 [L]
+#    RewriteRule ^nyos-image/(.*)-(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&uri=$3.$4 [L]
+#
+#    RewriteRule ^didra-nyos/q-(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&uri=$2/$3/$4.$5 [L]
+#    RewriteRule ^didra-nyos/q-(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?type=q&w=$1&uri=$2/$3.$4 [L]
+#
+#    RewriteRule ^didra-nyos/(.*)-(.*)/(.*)/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?redir=yes&q=$1&w=$2&uri=$3/$4/$5/$6/$7.$8 [L]
+#    RewriteRule ^didra-nyos/(.*)-(.*)/(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?redir=yes&q=$1&w=$2&uri=$3/$4/$5/$6.$7 [L]
+#    RewriteRule ^didra-nyos/(.*)-(.*)/(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?redir=yes&q=$1&w=$2&uri=$3/$4/$5.$6 [L]
+#    RewriteRule ^didra-nyos/(.*)-(.*)/(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$	/sys.image.jpg.php?redir=yes&q=$1&w=$2&uri=$3/$4.$5 [L]
+#    RewriteRule ^didra-nyos/(.*)-(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$            /sys.image.jpg.php?redir=yes&q=$1&w=$2&uri=$3.$4 [L]
+
+
+    # RewriteRule ^didra-nyos(.*)$            /sys.image.jpg.php?redir=yes&q=$1 [L]
+
+#    RewriteRule ^diimg/(.*)-(.*)/(.*)\.(gif|GIF|JPG|jpg|JPEG|jpeg|png)$ /0.service/show.edit.image.run.php?type=q&w=200&uri=module_items_image/594_1_93.jpg
+    #           /sys.image.jpg.php?redir=yes&q=$1&w=$2&uri=$3.$4 [L]
+
+    RewriteRule ^didrive/ajax.(.*)/$        /didrive/ajax.$1 [L]
+
+    RewriteRule ^didrive/(.*)/(.*)/(.*)/$        /i.didrive.php?level=$1&option=$2&extend=$3 [L]
+    RewriteRule ^didrive/(.*)/(.*)/$        /i.didrive.php?level=$1&option=$2 [L]
+    RewriteRule ^didrive/(.*)/$        /i.didrive.php?level=$1&option=index [L]
+    RewriteRule ^didrive/$        /i.didrive.php [L]
+
+    RewriteRule ^(.*)/(.*)/(.*)/(.*)/(.*)/(.*)/$        /index.php?level=$1&option=$2&ext1=$3&ext2=$4&ext3=$5&ext4=$6 [L]
+    RewriteRule ^(.*)/(.*)/(.*)/(.*)/(.*)/$        /index.php?level=$1&option=$2&ext1=$3&ext2=$4&ext3=$5 [L]
+    RewriteRule ^(.*)/(.*)/(.*)/(.*)/$        /index.php?level=$1&option=$2&ext1=$3&ext2=$4 [L]
+    RewriteRule ^(.*)/(.*)/(.*)/$        /index.php?level=$1&option=$2&ext1=$3 [L]
+    RewriteRule ^(.*)/(.*)/$        /index.php?level=$1&option=$2 [L]
+    RewriteRule ^(.*)/$        /index.php?level=$1 [L]
+
+    RewriteRule ^(.*)\.(htm|html)$        /index.php?level=$1 [L]
+    RewriteRule ^(.*)\.(htm|html)$        /index.php?level=$1 [L]
+
+    RewriteRule ^$	/index.php?level=000.index
+
+</IfModule>

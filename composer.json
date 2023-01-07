@@ -1,0 +1,9 @@
+{
+    "require": {
+        "vkcom/vk-php-sdk": "^5.95",
+        "true/punycode": "^2.1",
+        "telegram-bot/api": "^2.3",
+        "facebook/graph-sdk": "^5.7",
+        "didrive/base": "^1.1"
+    }
+}
