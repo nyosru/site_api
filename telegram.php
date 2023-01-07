@@ -121,7 +121,7 @@ try {
                     $to_id[] = 360209578;
 
                     $to_id = array_unique($to_id);
-
+var_dump($to_id);
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
                             $bot->sendMessage($tt, $msg);
