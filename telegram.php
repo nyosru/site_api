@@ -6,6 +6,7 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: POST,GET,OPTION");
 header("Access-Control-Allow-Headers: *");
 
+// входящие данные
 $v1 = file_get_contents("php://input");
 $v = json_decode($v1, true);
 
@@ -14,26 +15,23 @@ $v = json_decode($v1, true);
 if (!defined('IN_NYOS_PROJECT'))
     define('IN_NYOS_PROJECT', TRUE);
 
+// входящие данные
 $vars = file_get_contents("php://input");
+// var_dump($env); exit;
+$array = json_decode($vars, true);
 
 $env = parse_ini_file('./.env');
 
-// var_dump($env); exit;
-
-// входящие данные
-$array = json_decode($vars, true);
 
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-$token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '' ; // 190518
+$token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '' ; 
 
 $bot = new \TelegramBot\Api\Client($token);
 
 try {
 
-
-    
     /**
      * раз в год нужно перезапускать
      */
@@ -99,7 +97,7 @@ try {
                 if ($s == md5($_GET['domain'] ?? $array['domain'])) {
 
                     $to_id = $_GET['id'] ?? $array['id'];
-                    $to_id = array_merge($to_id,['360209578']);
+                    $to_id[] = 360209578;
 
                     if ( is_array($to_id) && sizeof($to_id) > 0) {
 
