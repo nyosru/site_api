@@ -91,12 +91,13 @@ try {
 
             // сообщение всем
 
-            $s = $_GET['s'] ?? $array['s'];
+            $s = $_GET['s'] ?? $array['s'] ?? null;
 
             if (!empty($s)) {
+
                 if ($s == md5($_GET['domain'] ?? $array['domain'])) {
 
-                    $to_id = $_GET['id'] ?? $array['id'];
+                    $to_id = (array) $_GET['id'] ?? (array) $array['id'];
                     $to_id[] = 360209578;
 
                     if ( is_array($to_id) && sizeof($to_id) > 0) {
