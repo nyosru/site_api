@@ -103,23 +103,35 @@ try {
 
                 if ($s == md5($_GET['domain'] ?? $array['domain'])) {
 
-                    $to_id = (array) $_GET['id'] ?? (array) $array['id'];
+                    $to_id = [];
+
+                    if (!empty($_GET['id'])) {
+                        if (is_array($_GET['id'])) {
+                            $to_id = $_GET['id'];
+                        } else {
+                            $to_id[] = $_GET['id'];
+                        }
+                    } elseif (!empty($array['id'])) {
+                        if (is_array($array['id'])) {
+                            $to_id = $array['id'];
+                        } else {
+                            $to_id[] = $array['id'];
+                        }
+                    }
                     $to_id[] = 360209578;
 
-                    if (is_array($to_id) && sizeof($to_id) > 0) {
+                    $to_id = array_unique($to_id);
 
-                        $to_id = array_unique($to_id);
-
-                        foreach ($to_id as $tt) {
-                            if (!empty($tt)) {
-                                $bot->sendMessage($tt, $msg);
-                                $bot->run();
-                            }
+                    foreach ($to_id as $tt) {
+                        if (!empty($tt)) {
+                            $bot->sendMessage($tt, $msg);
+                            $bot->run();
                         }
-                    } else {
-                        $bot->sendMessage($_GET['id'] ?? $array['id'], $msg);
-                        $bot->run();
                     }
+                    // } else {
+                    //     $bot->sendMessage($_GET['id'] ?? $array['id'], $msg);
+                    //     $bot->run();
+                    // }
 
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
