@@ -45,7 +45,8 @@ jobs:
           script: |
             cd www 
             cd ${{ secrets.FOLDER_DEV }} 
-            /opt/php74/bin/php ./composer.phar i --ignore-platform-req=ext-zip
+            /opt/php74/bin/php ./composer.phar i 
+          # /opt/php74/bin/php ./composer.phar i --ignore-platform-req=ext-zip
           # /opt/php74/bin/php artisan migrate
 
   # copy_files_modules_to_public:
