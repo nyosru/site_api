@@ -32,6 +32,8 @@ $bot = new \TelegramBot\Api\Client($token);
 
 try {
 
+
+    
     /**
      * раз в год нужно перезапускать
      */
