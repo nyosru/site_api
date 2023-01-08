@@ -130,7 +130,7 @@ try {
                         if (!empty($tt)) {
                             try {
                                 $bot->sendMessage((int) $tt, (string) $msg);
-                                $bot->run();
+                                // $bot->run();
                             } catch (\Exception $ex) {
                                 echo '<pre>';
                                 var_dump($ex);
@@ -142,6 +142,21 @@ try {
                             }
                         }
                     }
+
+                    try {
+                        $bot->run();
+                    } catch (\Exception $ex) {
+                        echo __FILE__.' #'.__LINE__;
+                        echo '<pre>';
+                        var_dump($ex);
+                        echo '</pre>';
+                    } catch (\Throwable $th) {
+                        echo __FILE__.' #'.__LINE__;
+                        echo '<pre>';
+                        var_dump($th);
+                        echo '</pre>';
+                    }
+
 
                     echo '<pre>';
                     var_dump($v);
