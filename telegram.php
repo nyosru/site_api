@@ -28,7 +28,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 
 $token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '';
 
-$bot = new \TelegramBot\Api\Client($token);
+$bot = new \TelegramBot\Api\Client($token,rand());
 
 try {
 
