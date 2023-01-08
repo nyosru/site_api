@@ -129,7 +129,7 @@ try {
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
                             try {
-                                $bot->sendMessage( (int) $tt, (string) $msg);
+                                $bot->sendMessage((int) $tt, (string) $msg);
                                 $bot->run();
                             } catch (\Throwable $th) {
                                 echo '<pre>';
