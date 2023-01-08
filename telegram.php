@@ -241,15 +241,15 @@ try {
 catch (\TelegramBot\Api\Exception $e) {
     $e->getMessage();
 }
-// //
-// catch (\Exception $ex) {
+//
+catch (\Exception $ex) {
 
-//     echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-//         . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
-//         . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
-//         . PHP_EOL . $ex->getTraceAsString()
-//         . '</pre>';
-// }
+    echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+        . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
+        . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
+        . PHP_EOL . $ex->getTraceAsString()
+        . '</pre>';
+}
 
 if (!empty($array['answer']) && $array['answer'] == 'json') {
     die(json_encode(['res' => false]));
