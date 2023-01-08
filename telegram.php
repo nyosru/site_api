@@ -171,7 +171,7 @@ try {
                 elseif ($s == md5(1) || $s == 1) {
 
                     $bot->sendMessage(360209578, $msg);
-                    $bot->run();
+                    // $bot->run();
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
                             // 'text' => 'no super var',
