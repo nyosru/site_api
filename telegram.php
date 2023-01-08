@@ -131,6 +131,10 @@ try {
                             try {
                                 $bot->sendMessage((int) $tt, (string) $msg);
                                 $bot->run();
+                            } catch (\Exception $ex) {
+                                echo '<pre>';
+                                var_dump($ex);
+                                echo '</pre>';
                             } catch (\Throwable $th) {
                                 echo '<pre>';
                                 var_dump($th);
