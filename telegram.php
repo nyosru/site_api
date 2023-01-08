@@ -141,7 +141,7 @@ try {
                     }
 
                     // try {
-                        $bot->run();
+                        // $bot->run();
                     // } catch (\Exception $ex) {
                     //     echo __FILE__.' #'.__LINE__;
                     //     echo '<pre>';
