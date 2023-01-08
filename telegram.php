@@ -126,7 +126,8 @@ try {
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
                             // try {
-                                $bot->sendMessage((int) $tt, (string) $msg);
+                                $res = $bot->sendMessage((int) $tt, (string) $msg);
+                                // var_dump($res);
                                 // $bot->run();
                             // } catch (\Exception $ex) {
                             //     echo '<pre>';
@@ -155,9 +156,9 @@ try {
                     // }
 
 
-                    echo '<pre>';
-                    var_dump($v);
-                    echo '</pre>';
+                    // echo '<pre>';
+                    // var_dump($v);
+                    // echo '</pre>';
 
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
