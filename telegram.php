@@ -6,29 +6,26 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: POST,GET,OPTION");
 header("Access-Control-Allow-Headers: *");
 
-// входящие данные
-$v1 = file_get_contents("php://input");
-$v = json_decode($v1, true);
-
-
 
 if (!defined('IN_NYOS_PROJECT'))
     define('IN_NYOS_PROJECT', TRUE);
 
+if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
+
+
+
 // входящие данные
-$vars = file_get_contents("php://input");
-// var_dump($env); exit;
-$array = json_decode($vars, true);
+$v1 = file_get_contents("php://input");
+$array =
+$v = json_decode($v1, true);
 
 $env = parse_ini_file('./.env');
 
-
-if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
-    require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-
 $token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '';
 
-$bot = new \TelegramBot\Api\Client($token,rand());
+$bot = new \TelegramBot\Api\Client($token);
 
 try {
 
@@ -236,9 +233,11 @@ try {
             exit;
         }
     }
+
 }
 //
 catch (\TelegramBot\Api\Exception $e) {
+    echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------';
     $e->getMessage();
 }
 //
