@@ -121,22 +121,28 @@ try {
                     $to_id[] = 360209578;
 
                     $to_id = array_unique($to_id);
+
+                    echo '<pre>';
                     var_dump($to_id);
+                    echo '</pre>';
+
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
                             try {
                                 $bot->sendMessage($tt, $msg);
                                 $bot->run();
                             } catch (\Throwable $th) {
+                                echo '<pre>';
                                 var_dump($th);
+                                echo '</pre>';
                             }
                         }
                     }
-                    // } else {
-                    //     $bot->sendMessage($_GET['id'] ?? $array['id'], $msg);
-                    //     $bot->run();
-                    // }
+
+                    echo '<pre>';
                     var_dump($v);
+                    echo '</pre>';
+
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
                             // 'text' => 'no super var',
