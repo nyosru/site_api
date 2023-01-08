@@ -236,10 +236,10 @@ try {
 
 }
 //
-catch (\TelegramBot\Api\Exception $e) {
-    echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------';
-    echo $e->getMessage();
-}
+// catch (\TelegramBot\Api\Exception $e) {
+//     echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------';
+//     echo $e->getMessage();
+// }
 //
 catch (\Exception $ex) {
 
@@ -247,7 +247,8 @@ catch (\Exception $ex) {
         . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
         . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
         . PHP_EOL . $ex->getTraceAsString()
-        . '</pre>';
+        . PHP_EOL , print_r($ex) ,
+        '</pre>';
 }
 
 if (!empty($array['answer']) && $array['answer'] == 'json') {
