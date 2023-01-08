@@ -227,10 +227,10 @@ try {
             }
 
             $bot->sendMessage(360209578, $e);
-            $bot->run();
+            // $bot->run();
 
             $bot->sendMessage($array['message']['from']['id'], 'Принято, спасибо');
-            $bot->run();
+            // $bot->run();
             exit;
         }
     }
