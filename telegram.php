@@ -128,34 +128,34 @@ try {
 
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
-                            try {
+                            // try {
                                 $bot->sendMessage((int) $tt, (string) $msg);
                                 // $bot->run();
-                            } catch (\Exception $ex) {
-                                echo '<pre>';
-                                var_dump($ex);
-                                echo '</pre>';
-                            } catch (\Throwable $th) {
-                                echo '<pre>';
-                                var_dump($th);
-                                echo '</pre>';
-                            }
+                            // } catch (\Exception $ex) {
+                            //     echo '<pre>';
+                            //     var_dump($ex);
+                            //     echo '</pre>';
+                            // } catch (\Throwable $th) {
+                            //     echo '<pre>';
+                            //     var_dump($th);
+                            //     echo '</pre>';
+                            // }
                         }
                     }
 
-                    try {
+                    // try {
                         $bot->run();
-                    } catch (\Exception $ex) {
-                        echo __FILE__.' #'.__LINE__;
-                        echo '<pre>';
-                        var_dump($ex);
-                        echo '</pre>';
-                    } catch (\Throwable $th) {
-                        echo __FILE__.' #'.__LINE__;
-                        echo '<pre>';
-                        var_dump($th);
-                        echo '</pre>';
-                    }
+                    // } catch (\Exception $ex) {
+                    //     echo __FILE__.' #'.__LINE__;
+                    //     echo '<pre>';
+                    //     var_dump($ex);
+                    //     echo '</pre>';
+                    // } catch (\Throwable $th) {
+                    //     echo __FILE__.' #'.__LINE__;
+                    //     echo '<pre>';
+                    //     var_dump($th);
+                    //     echo '</pre>';
+                    // }
 
 
                     echo '<pre>';
@@ -238,14 +238,18 @@ try {
     }
 }
 //
-catch (\Exception $ex) {
-
-    echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
-        . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
-        . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
-        . PHP_EOL . $ex->getTraceAsString()
-        . '</pre>';
+catch (\TelegramBot\Api\Exception $e) {
+    $e->getMessage();
 }
+// //
+// catch (\Exception $ex) {
+
+//     echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------'
+//         . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
+//         . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
+//         . PHP_EOL . $ex->getTraceAsString()
+//         . '</pre>';
+// }
 
 if (!empty($array['answer']) && $array['answer'] == 'json') {
     die(json_encode(['res' => false]));
