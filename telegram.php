@@ -238,7 +238,7 @@ try {
 //
 catch (\TelegramBot\Api\Exception $e) {
     echo '<pre>--- ' . __FILE__ . ' ' . __LINE__ . '-------';
-    $e->getMessage();
+    echo $e->getMessage();
 }
 //
 catch (\Exception $ex) {
