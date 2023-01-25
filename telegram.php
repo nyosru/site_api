@@ -220,7 +220,7 @@ try {
             ) {
 
 
-            $bot->sendMessage(360209578, 'дай ссылку на альфа банк: запросил @'.$array['message']['from']['id'] );
+            $bot->sendMessage(360209578, 'дай ссылку на альфа банк: запросил #'.$array['message']['from']['id'] .' @'.$array['message']['from']['username'] );
             $bot->run();
 
             $e = 'Привет' . PHP_EOL .
