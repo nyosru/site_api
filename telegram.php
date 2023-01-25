@@ -219,6 +219,10 @@ try {
             $array['message']['text'] == 'дай ссылку на альфа банк'
             ) {
 
+
+            $bot->sendMessage(360209578, 'дай ссылку на альфа банк: запросил '.$array['message']['from']['id'] );
+            $bot->run();
+
             $e = 'Привет' . PHP_EOL .
             'Альфа банк готов платить, условия тут https://php-cat.com/money '. 
             PHP_EOL.
