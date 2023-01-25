@@ -214,7 +214,26 @@ try {
             exit;
         }
         //
+        elseif (
+            $array['message']['text'] == '/link-to-alfa' ||
+            $array['message']['text'] == 'дай ссылку на альфа банк'
+            ) {
+
+            $e = 'Привет' . PHP_EOL .
+            'Альфа банк готов платить, условия тут https://php-cat.com/money '. 
+            PHP_EOL.
+            PHP_EOL.
+            'Ссылка для регистрации: https://vk.cc/cl2zmn';
+            
+            $bot->sendMessage($array['message']['from']['id'], $e);
+            // $bot->run();
+            exit;
+        }
+        //
         elseif (!empty($array['message']['text'])) {
+
+
+            
 
             $e = 'сообщение в бота'
                 // .PHP_EOL.PHP_EOL
