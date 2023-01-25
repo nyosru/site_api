@@ -227,7 +227,9 @@ try {
             'Альфа банк готов платить, условия тут https://php-cat.com/money '. 
             PHP_EOL.
             PHP_EOL.
-            'Ссылка для регистрации: https://vk.cc/cl2zmn';
+            // 'Ссылка для регистрации: https://vk.cc/cl2zmn';
+            'Ссылка для регистрации: https://alfabank.ru/everyday/debit-cards/alfacard-short/?platformId=alfapartners_cpa_79135_DC-visaclassic-70field-sale-254227-rega77-0-0-webmaster&utm_source=alfapartners&utm_medium=cpa&utm_campaign=79135&utm_content=alfapartners_cpa_79135_DC-visaclassic-70field-sale-254227-rega77-0-0-webmaster&card=visa_classic'
+            ;
             
             $bot->sendMessage($array['message']['from']['id'], $e);
             // $bot->run();
