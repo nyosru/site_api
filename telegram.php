@@ -11,7 +11,7 @@ if (!defined('IN_NYOS_PROJECT'))
     define('IN_NYOS_PROJECT', TRUE);
 
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 
 
@@ -19,7 +19,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 // входящие данные
 $v1 = file_get_contents("php://input");
 $array =
-$v = json_decode($v1, true);
+    $v = json_decode($v1, true);
 
 $env = parse_ini_file('./.env');
 
@@ -108,6 +108,12 @@ try {
                         } else {
                             $to_id[] = $_GET['id'];
                         }
+                    } elseif (!empty($_POST['id'])) {
+                        if (is_array($_GET['id'])) {
+                            $to_id = $_GET['id'];
+                        } else {
+                            $to_id[] = $_GET['id'];
+                        }
                     } elseif (!empty($array['id'])) {
                         if (is_array($array['id'])) {
                             $to_id = $array['id'];
@@ -115,6 +121,7 @@ try {
                             $to_id[] = $array['id'];
                         }
                     }
+
                     $to_id[] = 360209578;
 
                     $to_id = array_unique($to_id);
@@ -126,9 +133,9 @@ try {
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
                             // try {
-                                $res = $bot->sendMessage((int) $tt, (string) $msg);
-                                // var_dump($res);
-                                // $bot->run();
+                            $res = $bot->sendMessage((int) $tt, (string) $msg);
+                            // var_dump($res);
+                            // $bot->run();
                             // } catch (\Exception $ex) {
                             //     echo '<pre>';
                             //     var_dump($ex);
@@ -142,7 +149,7 @@ try {
                     }
 
                     // try {
-                        // $bot->run();
+                    // $bot->run();
                     // } catch (\Exception $ex) {
                     //     echo __FILE__.' #'.__LINE__;
                     //     echo '<pre>';
@@ -217,20 +224,19 @@ try {
         elseif (
             $array['message']['text'] == '/link-to-alfa' ||
             $array['message']['text'] == 'дай ссылку на альфа банк'
-            ) {
+        ) {
 
 
-            $bot->sendMessage(360209578, 'дай ссылку на альфа банк: запросил #'.$array['message']['from']['id'] .' @'.$array['message']['from']['username'] );
+            $bot->sendMessage(360209578, 'дай ссылку на альфа банк: запросил #' . $array['message']['from']['id'] . ' @' . $array['message']['from']['username']);
             $bot->run();
 
             $e = 'Привет' . PHP_EOL .
-            'Альфа банк готов платить, условия тут https://php-cat.com/money '. 
-            PHP_EOL.
-            PHP_EOL.
-            // 'Ссылка для регистрации: https://vk.cc/cl2zmn';
-            'Ссылка для регистрации: https://alfabank.ru/everyday/debit-cards/alfacard-short/?platformId=alfapartners_cpa_79135_DC-visaclassic-70field-sale-254227-rega77-0-0-webmaster&utm_source=alfapartners&utm_medium=cpa&utm_campaign=79135&utm_content=alfapartners_cpa_79135_DC-visaclassic-70field-sale-254227-rega77-0-0-webmaster&card=visa_classic'
-            ;
-            
+                'Альфа банк готов платить, условия тут https://php-cat.com/money ' .
+                PHP_EOL .
+                PHP_EOL .
+                // 'Ссылка для регистрации: https://vk.cc/cl2zmn';
+                'Ссылка для регистрации: https://alfabank.ru/everyday/debit-cards/alfacard-short/?platformId=alfapartners_cpa_79135_DC-visaclassic-70field-sale-254227-rega77-0-0-webmaster&utm_source=alfapartners&utm_medium=cpa&utm_campaign=79135&utm_content=alfapartners_cpa_79135_DC-visaclassic-70field-sale-254227-rega77-0-0-webmaster&card=visa_classic';
+
             $bot->sendMessage($array['message']['from']['id'], $e);
             // $bot->run();
             exit;
@@ -239,7 +245,7 @@ try {
         elseif (!empty($array['message']['text'])) {
 
 
-            
+
 
             $e = 'сообщение в бота'
                 // .PHP_EOL.PHP_EOL
@@ -259,7 +265,6 @@ try {
             exit;
         }
     }
-
 }
 //
 // catch (\TelegramBot\Api\Exception $e) {
@@ -273,8 +278,8 @@ catch (\Exception $ex) {
         . PHP_EOL . $ex->getMessage() . ' #' . $ex->getCode()
         . PHP_EOL . $ex->getFile() . ' #' . $ex->getLine()
         . PHP_EOL . $ex->getTraceAsString()
-        . PHP_EOL , print_r($ex) ,
-        '</pre>';
+        . PHP_EOL, print_r($ex),
+    '</pre>';
 }
 
 if (!empty($array['answer']) && $array['answer'] == 'json') {
