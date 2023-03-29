@@ -57,7 +57,7 @@ try {
         }
     } else {
 
-        $bot->sendMessage(360209578, serialize([$array,$_GET]));
+        // $bot->sendMessage(360209578, serialize([$array,$_GET]));
 
         $run = false;
 
