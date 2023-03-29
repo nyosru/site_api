@@ -27,6 +27,9 @@ $token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '';
 
 $bot = new \TelegramBot\Api\Client($token);
 
+
+
+
 try {
 
     /**
@@ -53,6 +56,8 @@ try {
             file_put_contents('telegram.registered.trigger', time()); // создаем файл дабы остановить повторные регистрации
         }
     } else {
+
+        $bot->sendMessage(360209578, serialize([$array,$_GET]));
 
         $run = false;
 
@@ -108,7 +113,8 @@ try {
                         } else {
                             $to_id[] = $_GET['id'];
                         }                    
-                    } elseif (!empty($array['id'])) {
+                    } 
+                    elseif (!empty($array['id'])) {
                         if (is_array($array['id'])) {
                             $to_id = $array['id'];
                         } else {
