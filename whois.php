@@ -16,7 +16,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 echo '<form action="" method="GET" >'.
 'Домен <input type="text" value="" />'.
 '<br/>'.
-'показать ответ в формате JSON <input type="checbox" name="return_json" value="on" />'.
+'показать ответ в формате JSON <input type="checkbox" name="return" value="json" />'.
 '<br/>'.
 '<button type="submit" >Отправиить</button>'.
 '</form>';
