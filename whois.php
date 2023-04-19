@@ -12,7 +12,15 @@ if (!defined('IN_NYOS_PROJECT'))
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-    
+
+echo '<form action="" method="GET" >'.
+'Домен <input type="text" value="" />'.
+'<br/>'.
+'показать ответ в формате JSON <input type="checbox" name="return_json" value="on" />'.
+'<br/>'.
+'<button type="submit" >Отправиить</button>'.
+'</form>';
+
 die( __FILE__.' #'.__LINE__ );
 
 
