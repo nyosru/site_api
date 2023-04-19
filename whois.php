@@ -15,7 +15,7 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
 
 echo '<h2>Whois</h2>' .
     '<form action="" method="GET" >' .
-    'Домен <input type="text" value="" />' .
+    'Домен <input type="text" name="domain" value="" />' .
     '<br/>' .
     'показать ответ в формате JSON <input type="checkbox" name="return" value="json" />' .
     '<br/>' .
