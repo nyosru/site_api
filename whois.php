@@ -12,15 +12,29 @@ if (!defined('IN_NYOS_PROJECT'))
 if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
     require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
+if (isset($_GET['return']) && $_GET['return'] == 'json') {
+} else {
 
-echo '<h2>Whois</h2>' .
-    '<form action="" method="GET" >' .
-    'Домен <input type="text" name="domain" value="" />' .
-    '<br/>' .
-    'показать ответ в формате JSON <input type="checkbox" name="return" value="json" />' .
-    '<br/>' .
-    '<button type="submit" >Отправиить</button>' .
-    '</form>';
+    echo '<h2>Whois</h2>' .
+        '<form action="" method="GET" >' .
+        'Домен <input type="text" name="domain" value="" />' .
+        '<br/>' .
+        'показать ответ в формате JSON <input type="checkbox" name="return" value="json" />' .
+        '<br/>' .
+        '<button type="submit" >Отправиить</button>' .
+        '</form>';
+}
+
+
+if (isset($_GET['return']) && $_GET['return'] == 'json') {
+
+    $return = [];
+
+    
+
+    die(json_encode($return));
+
+}
 
 die(__FILE__ . ' #' . __LINE__);
 

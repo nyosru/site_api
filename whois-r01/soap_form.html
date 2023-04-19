@@ -1,0 +1,849 @@
+<!--<html><head><meta http-equiv=content-type content="text/html; charset=koi8-r"><title>SOAP</title></head>-->
+<html><head><meta http-equiv=content-type content="text/html; charset=utf-8"><title>SOAP</title></head>
+<body>
+<a name="top"></a>
+<p style="text-decoration: underline;">
+<b>Функции, доступные через SOAP-интерфейс CENTROHOST: ________________________</b></p>
+<a href="#adddomain">Add Domain</a><br>
+<a href="#upddomain">Update Domain</a><br>
+<a href="#prolongdomain">Prolong Domain</a><br>
+<a href="#adddadminpers">Add Domain Admin (Person)</a><br>
+<a href="#adddadminorg">Add Domain Admin (Org)</a><br>
+<a href="#upddadminpers">Update Domain Admin (Person)</a><br>
+<a href="#upddadminorg">Update Domain Admin (Org)</a><br>
+<a href="#checktask">Check Task Status</a><br>
+<a href="#getdomains">Get Domains</a><br>
+<a href="#getbalanceinfo">Get Balance Info</a><br>
+<a href="#getdomainsforpushin">Get Domains For Push In</a><br>
+<a href="#domainmntchange">Change Domain Maintnainer</a><br>
+<a href="#getauctiondomains">Get Auction Domains</a><br>
+<a href="#getmyauctiondomains">Get My Auction Domains</a><br>
+<a href="#auctionitem">Auction Item</a><br>
+<a href="#takeauctiondomain">Take Auction Domain</a><br>
+<a href="#checkdadminexist">Check Dadmin Exist</a><br>
+<a href="#addnewrrrecord">Add New RR Record</a><br>
+<a href="#addnewrrrecordasync">Add New RR Record Async</a><br>
+<a href="#getrrrecords">Get RR Records</a><br>
+<a href="#editrrrecord">Edit RR Record</a><br>
+<a href="#deleterrrecord">Delete RR Record</a><br>
+<a href="#clearzone">Delete All RR Records</a><br>
+<a href="#getdnstemplates">Get DNS Templates</a><br>
+<a href="#setdnstemplate">Set DNS Template</a><br>
+<a href="#checkdomainavailable">Check Domain Available</a><br>
+<a href="#changedomaincnodns">Change International Domain DNS servers</a><br>
+<a href="#domaincnotransfer">Transfer International Domain</a><br>
+<a href="#getconfirmscantypes">Get Confirm Document Types</a><br>
+<a href="#uploadconfirmdoc">Upload Confirm Scanned Document</a><br>
+<a href="#getabonents">Get Abonents</a><br>
+<a href="#masqueradeas">Masquerade As</a><br>
+<a href="#getlistofregistrars">Get List Of Registrars</a><br>
+<a href="#getconfirmscans">Get List Of Documents Downloaded</a><br>
+<!--<a href="#adddomainrfrequest">Add Domain RF Request</a><br>-->
+<a href="#getinfoaboutdadmin">Get Info About Dadmin</a><br>
+<a href="#getdomainsallsimple">Get All Domains</a><br>
+<a href="#getdadmins">Get Dadmins</a><br>
+<p style="text-decoration: underline;">
+
+<a name="adddomain"></a>
+<b>Регистрация нового домена: ______________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_add.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain name:</td><td><input type="text" name="domainname" value="test-001.ru"></td></tr>
+<tr><td>Nservers:</td><td><textarea cols="50" rows="7" name="nservers" style="vertical-align:top;">ns1.parkline.ru
+ns2.parkline.ru</textarea><br>
+например:&nbsp;&nbsp;nserver1.domain.ru 195.222.222.221<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+nserver2.domain.ru 195.222.222.222<br></td></tr>
+<tr><td>Nic-hdl:</td><td><input type="text" name="nichdl" value="SAMPLE-NIC"></td></tr>
+<tr><td>Description:</td><td><input type="text" name="description" value="Describe your domain!"></td></tr>
+<tr><td>Account type:</td><td>
+&nbsp;Real<input type="radio" name="accounttype" value="real" checked>
+&nbsp;&nbsp;&nbsp;&nbsp;Bonus<input type="radio" name="accounttype" value="bonus">
+&nbsp;&nbsp;&nbsp;&nbsp;Real,bonus<input type="radio" name="accounttype" value="real,bonus">
+&nbsp;&nbsp;&nbsp;&nbsp;Bonus,real<input type="radio" name="accounttype" value="bonus,real"><br>
+</td></tr>
+<tr><td>Years<br>(international domains):</td><td><input type="text" name="years" value="1"></td></tr> 
+<tr><td>Disable checking DNS servers<br>(ru/su domains):</td><td><input type=checkbox name='dont_test_ns' value="1"></td></tr> 
+<tr><td><input type="submit" name="add" value="Add Domain"></td><td></td></tr>
+</table>
+</form>
+
+<a name="upddomain"></a>
+<p style="text-decoration: underline;">
+<b>Редактирование домена:_________________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_update.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain name:</td><td><input type="text" name="domainname" value="test-001.ru"></td></tr>
+<tr><td>Nservers:</td><td><textarea cols="50" rows="7" name="nservers" style="vertical-align:top;">ns1.parkline.ru
+ns2.parkline.ru</textarea>
+<br>например:&nbsp;&nbsp;nserver1.domain.ru 195.222.222.221<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+nserver2.domain.ru 195.222.222.222<br></td></tr>
+<tr><td>Nic-hdl:</td><td><input type="text" name="nichdl" value="SAMPLE-NIC"></td></tr>
+<tr><td>Description:</td><td><input type="text" name="description" value="Describe your domain!"></td></tr>
+<tr><td>Disable checking DNS servers<br>(ru/su domains):</td><td><input type=checkbox name='dont_test_ns' value="1"></td></tr> 
+<tr><td>Replace previous task?  </td><td>
+&nbsp;No<input type="radio" name="need_replace" value="0" checked>
+&nbsp;&nbsp;&nbsp;&nbsp;Yes<input type="radio" name="need_replace" value="1"><br></td></tr>
+<tr><td><input type="submit" name="update" value="Update Domain"></td><td></td></tr>
+</table>
+</form>
+
+<a name="prolongdomain"></a>
+<p style="text-decoration: underline;">
+<b>Продление домена:_____________________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_prolong.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password: </td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain name: </td><td><input type="text" name="domainname" value="test-001.ru"></td></tr>
+<tr><td>Years<br>(international domains):</td><td><input type="text" name="years" value="1"></td></tr>
+<tr><td>Account type:</td><td>
+&nbsp;Real<input type="radio" name="accounttype" value="real" checked>
+&nbsp;&nbsp;&nbsp;&nbsp;Bonus<input type="radio" name="accounttype" value="bonus">
+&nbsp;&nbsp;&nbsp;&nbsp;Real,bonus<input type="radio" name="accounttype" value="real,bonus">
+&nbsp;&nbsp;&nbsp;&nbsp;Bonus,real<input type="radio" name="accounttype" value="bonus,real"><br>
+</td></tr>
+<tr><td><input type="submit" name="prolong" value="Prolong Domain"></td><td></td></tr>
+</table>
+</form>
+
+
+<a name="adddadminpers"></a>
+<p style="text-decoration: underline;">
+<b>Заведение нового администратора доменов (физ. лицо): ________________<a href="#top">Top</a></b></p>
+<form action="soap_action_adddadminperson.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>Nic-hdl:</td><td><input type="text" name="nic_hdl" value="SAMPLE-NIC"></td>                           </tr>
+<tr><td>FIO (Rus):</td><td><input type="text" name="fiorus" size="40" value="Новый Алексей Петрович"></td> </tr>
+<tr><td>FIO (Eng):</td><td><input type="text" name="fioeng" size="40" value="Novyj Aleksej Petrovich"></td></tr>
+<tr><td>Passport:</td><td><textarea cols="50" rows="3" name="passport" style="vertical-align:top;">24 07 125478
+Выдан ОВД Поселкового р-на г. Новомедведевска
+12-11-2001</textarea>                                                                                   </td></tr>
+<tr><td>Date of birth:</td><td><input type="text" name="birth_date" value="12-11-2001">                 </td></tr>
+<tr><td>Postal Address:&nbsp;&nbsp;&nbsp;&nbsp;</td><td><textarea cols="50" rows="3" name="postal_addr" style="vertical-align:top;">123412, г. Новомедведевск,
+ул. Инаугурационная,
+д.11 кв.777</textarea>                                                                                  </td></tr>
+<tr><td>Phone numbers:</td><td><textarea cols="50" rows="3" name="phone" style="vertical-align:top;">+7 497 123412
++7 111 123414</textarea>                                                                               </td></tr>
+<tr><td>Fax numbers:</td><td><textarea cols="50" rows="3" name="fax" style="vertical-align:top;">+7 497 123412
++7 111 123414</textarea>                                                                               </td></tr>
+<tr><td>E-mails:</td><td><textarea cols="50" rows="3" name="e_mail" style="vertical-align:top;">novyj@test.ru
+peviosam@test.ru</textarea>                                                                       </td></tr>
+<tr><td>Is resident:</td><td><select size="2" name="isresident">
+                             <option name="isresident" value="1" selected>Yes</option>
+                             <option name="isresident" value="0">No</option></select>
+                             </td></tr>
+<tr><td>Protected:</td><td><select size="2" name="isprotected">
+                             <option name="isprotected" value="1">Yes</option>
+                             <option name="isprotected" value="0" selected>No</option></select> 
+                             </td></tr>
+<tr><td>INN Code:</td><td><input type="text" name="inn" size="40" value=""></td></tr>
+</table>
+<input type="submit" name="createDadmin" value="CreateDadmin">
+</form>
+
+<a name="adddadminorg"></a>
+<p style="text-decoration: underline;">
+<b>Заведение нового администратора доменов (юр. лицо):_________________<a href="#top">Top</a></b></p>
+<form action="soap_action_adddadminorg.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>Nic-hdl:</td><td><input type="text" name="nic_hdl" value="SAMPLE-NIC"></td>                           </tr>
+<tr><td>Organization name (Rus):</td><td><input type="text" name="orgname_ru" size="40" value="ООО &quot;Благородный Белый Колибри&quot;"></td> </tr>
+<tr><td>Organization name (Eng):</td><td><input type="text" name="orgname_en" size="40" value="JSC &quot;Noble White Hummingbird&quot;"></td></tr>
+<tr><td>INN Code:</td><td><input type="text" name="inn" size="40" value="123456789"></td></tr>
+<tr><td>KPP Code:</td><td><input type="text" name="kpp" size="40" value="123456789"></td></tr>
+<tr><td>OGRN Code:</td><td><input type="text" name="ogrn" size="40" value="123456789"></td></tr>
+<tr><td>Legal Address:</td><td><textarea cols="50" rows="3" name="legal_addr" style="vertical-align:top;">129878, Новозеландск-сити,
+3-я улица ВлаПу,
+кв. 777</textarea>                                                                                   </td></tr>
+<tr><td>Postal Address:</td><td><textarea cols="50" rows="3" name="postal_addr" style="vertical-align:top;">129878, Новозеландск-сити,
+5-я улица ВлаПу,
+а/я 202</textarea>                                                                                   </td></tr>
+<tr><td>Phone numbers:</td><td><textarea cols="50" rows="3" name="phone" style="vertical-align:top;">+7 497 123412
++7 497 123414</textarea>                                                                               </td></tr>
+<tr><td>Fax numbers:</td><td><textarea cols="50" rows="3" name="fax" style="vertical-align:top;">+7 497 123412
++7 497 123414</textarea>                                                                               </td></tr>
+<tr><td>E-mails:</td><td><textarea cols="50" rows="3" name="e_mail" style="vertical-align:top;">hummingbird@test.ru
+hi@test.ru</textarea>                                                                       </td></tr>
+<tr><td>Director's name (Rus):</td><td><input type="text" name="director_name" size="40" value="Колибров Бел Афанасьевич"></td> </tr>
+<tr><td>Bank:</td><td><input type="text" name="bank" size="40" value="ОАО &quot;Коммерческий Банк Цветинтерпромкредитсообщество&quot;"></td> </tr>
+<tr><td>Rasch schet:</td><td><input type="text" name="ras_schet" size="40" value="123456789"></td></tr>
+<tr><td>Korr schet:</td><td><input type="text" name="kor_schet" size="40" value="123456789"></td></tr>
+<tr><td>BIK Code:</td><td><input type="text" name="bik" size="40" value="123456789"></td></tr>
+<tr><td>Is resident:</td><td><select size="2" name="isresident">
+                             <option name="isresident" value="1" selected>Yes</option>
+                             <option name="isresident" value="0">No</option></select>
+                             </td></tr>
+</table>
+<input type="submit" name="createDadmin" value="CreateDadmin">
+</form>
+
+<a name="upddadminpers"></a>
+<p style="text-decoration: underline;">
+<b>Редактирование администратора доменов (физ. лицо):__________________<a href="#top">Top</a></b></p>
+<form action="soap_action_upddadminperson.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>Nic-hdl:</td><td><input type="text" name="nic_hdl" value="SAMPLE-NIC"></td>                           </tr>
+<tr><td>FIO (Rus):</td><td><input type="text" name="fiorus" size="40" value="Петродворецкая Виолетта Самойловна"></td> </tr>
+<tr><td>FIO (Eng):</td><td><input type="text" name="fioeng" size="40" value="Petrodvoreckaya Violetta Samoilowna"></td></tr>
+<tr><td>Passport:</td><td><textarea cols="50" rows="3" name="passport" style="vertical-align:top;">44 07 125478
+Выдан ОВД &quot;Медведкого&quot;
+12-11-2001</textarea>                                                                                   </td></tr>
+<tr><td>Date of birth:</td><td><input type="text" name="birth_date" value="12-11-2001">                 </td></tr>
+<tr><td>Postal Address:&nbsp;&nbsp;&nbsp;&nbsp;</td><td><textarea cols="50" rows="3" name="postal_addr" style="vertical-align:top;">123412, г.Дальнемышск,
+ул.Путина,
+д.11 кв.777</textarea>                                                                                  </td></tr>
+<tr><td>Phone numbers:</td><td><textarea cols="50" rows="3" name="phone" style="vertical-align:top;">+7 497 123412
++7 497 123414</textarea>                                                                               </td></tr>
+<tr><td>Fax numbers:</td><td><textarea cols="50" rows="3" name="fax" style="vertical-align:top;">+7 497 123412
++7 497 123414</textarea>                                                                               </td></tr>
+<tr><td>E-mails:</td><td><textarea cols="50" rows="3" name="e_mail" style="vertical-align:top;">petroviols@test.ru
+peviosam@test.ru</textarea>                                                                       </td></tr>
+<tr><td>Is resident:</td><td><select size="2" name="isresident">
+                             <option name="isresident" value="1" selected>Yes</option>
+                             <option name="isresident" value="0">No</option></select>
+                             </td></tr>
+<tr><td>Protected:</td><td><select size="2" name="isprotected">
+                             <option name="isprotected" value="1">Yes</option>
+                             <option name="isprotected" value="0" selected>No</option></select> 
+                             </td></tr>
+</table>
+<input type="submit" name="updateDadmin" value="UpdateDadmin">
+</form>
+
+<a name="upddadminorg"></a>
+<p style="text-decoration: underline;">
+<b>Редактирование администратора доменов (юр. лицо):___________________<a href="#top">Top</a></b></p>
+<form action="soap_action_upddadminorg.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>Nic-hdl:</td><td><input type="text" name="nic_hdl" value="SAMPLE-NIC"></td>                           </tr>
+<tr><td>Organization name (Rus):</td><td><input type="text" name="orgname_ru" size="40" value="ООО &quot;Благородный Белый Колибри&quot;"></td> </tr>
+<tr><td>Organization name (Eng):</td><td><input type="text" name="orgname_en" size="40" value="JSC &quot;Noble White Hummingbird&quot;"></td></tr>
+<tr><td>INN Code:</td><td><input type="text" name="inn" size="40" value="123456789"></td></tr>
+<tr><td>KPP Code:</td><td><input type="text" name="kpp" size="40" value="123456789"></td></tr>
+<tr><td>OGRN Code:</td><td><input type="text" name="ogrn" size="40" value="123456789"></td></tr>
+<tr><td>Legal Address:</td><td><textarea cols="50" rows="3" name="legal_addr" style="vertical-align:top;">129878, Новозеландск-сити,
+3-я улица ВлаПу,
+кв. 777</textarea>                                                                                   </td></tr>
+<tr><td>Postal Address:</td><td><textarea cols="50" rows="3" name="postal_addr" style="vertical-align:top;">129878, Новозеландск-сити,
+5-я улица ВлаПу,
+а/я 202</textarea>                                                                                   </td></tr>
+<tr><td>Phone numbers:</td><td><textarea cols="50" rows="3" name="phone" style="vertical-align:top;">+7 497 123412
++7 497 123414</textarea>                                                                               </td></tr>
+<tr><td>Fax numbers:</td><td><textarea cols="50" rows="3" name="fax" style="vertical-align:top;">+7 497 123412
++7 497 123414</textarea>                                                                               </td></tr>
+<tr><td>E-mails:</td><td><textarea cols="50" rows="3" name="e_mail" style="vertical-align:top;">hummingbird@test.ru
+hi@test.ru</textarea>                                                                       </td></tr>
+<tr><td>Director's name (Rus):</td><td><input type="text" name="director_name" size="40" value="Колибров Бел Афанасьевич"></td> </tr>
+<tr><td>Bank:</td><td><input type="text" name="bank" size="40" value="ОАО &quot;Коммерческий Банк Цветинтерпромкредитсообщество&quot;"></td> </tr>
+<tr><td>Rasch schet:</td><td><input type="text" name="ras_schet" size="40" value="123456789"></td></tr>
+<tr><td>Korr schet:</td><td><input type="text" name="kor_schet" size="40" value="123456789"></td></tr>
+<tr><td>BIK Code:</td><td><input type="text" name="bik" size="40" value="123456789"></td></tr>
+<tr><td>Is resident:</td><td><select size="2" name="isresident">
+                             <option name="isresident" value="1" selected>Yes</option>
+                             <option name="isresident" value="0">No</option></select>
+                             </td></tr>
+</table>
+<input type="submit" name="updateDadmin" value="UpdateDadmin">
+</form>
+
+<a name="checktask"></a>
+<p style="text-decoration: underline;">
+<b>Проверка текущего статуса выполнения задания по номеру:______________<a href="#top">Top</a></b></p>
+<form action="soap_action_checktask.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>Task ID:</td><td><input type="text" name="taskid" value="363"></td>                           </tr>
+</table>
+<input type="submit" name="checkTask" value="Check Task Status">
+</form>
+
+
+<a name="getdomains"></a>
+<p style="text-decoration: underline;">
+<b>Поиск доменов по введенным параметрам:______________<a href="#top">Top</a></b></p>
+<form action="soap_action_getdomains.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>domain name:</td><td><input type="text" name="domain" value=""></td>                           </tr>
+<tr><td>domain state:</td><td><select size="6" name="state">
+                             <option name="state" value="ALL" selected>ALL</option>
+                             <option name="state" value="DELEGATED">DELEGATED</option>
+                             <option name="state" value="NOT DELEGATED">NOT DELEGATED</option>
+                             <option name="state" value="Active">Active</option>
+                             <option name="state" value="Deleted">Deleted</option>
+                             <option name="state" value="Suspended">Suspended</option></select>
+                                                   </td>                           </tr>
+<tr><td>registered till - from:</td><td><input type="text" name="date_from" value=""></td>                           </tr>
+<tr><td>registered till - to:</td><td><input type="text" name="date_to" value="11-10-2008"></td>                           </tr>
+<tr><td>admin-o (nic-hdl):</td><td><input type="text" name="admin-o" value=""></td>                           </tr>
+<tr><td>dadmin type:</td><td><select size="3" name="isorg">
+                             <option name="isorg" value="ALL" selected>ALL</option>
+                             <option name="isorg" value="ORG">ORG</option>
+                             <option name="isorg" value="PERSON">PERSON</option></select>                      </td>                           </tr>
+<tr><td>dadmin name (ru):</td><td><input type="text" name="name_rus" value=""></td>                           </tr>
+<tr><td>dadmin name (eng):</td><td><input type="text" name="name_eng" value=""></td>                           </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>sort field:</td><td><input type="text" name="sort_field" value=""></td>                           </tr>
+<tr><td>sort direction:</td><td><input type="text" name="sort_dir" value=""></td>                           </tr>
+<tr><td>limit:</td><td><input type="text" name="limit" value="10">  </td>                           </tr>
+<tr><td>pagenum (первая страница - 1):</td><td><input type="text" name="pagenum" value="1"></td>                           </tr>
+<tr><td>Strict? </td><td><input type="checkbox" name="strict" value="1"></td>                           </tr>
+</table>
+<input type="submit" name="getDomains" value="Get Domains">
+</form>
+
+<a name="getbalanceinfo"></a>
+<p style="text-decoration: underline;">
+<b>Проверка баланса лицевого счета:_______________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_getbalanceinfo.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+</table>
+<input type="submit" name="getBalanceInfo" value="Get Balance Info">
+</form>
+
+<a name="getdomainsforpushin"></a>
+<p style="text-decoration: underline;">
+<b>Получение списка доменов, передаваемых с другого договора:___________<a href="#top">Top</a></b></p>
+<form action="soap_action_getdomainsforpushin.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+</table>
+<input type="submit" name="getDomainsForPushIn" value="Get Domains For Push In">
+</form>
+
+<a name="domainmntchange"></a>
+<p style="text-decoration: underline;">
+<b>Принять/отклонить передаваемые домены:___________<a href="#top">Top</a></b></p>
+<form action="soap_action_domainmntchange.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>Domain list:</td><td><textarea cols="50" rows="3" name="domainlist" style="vertical-align:top;">domain1.ru
+domain2.ru</textarea>                                                                               </td></tr>
+<tr><td>Action:</td><td><select size="2" name="what_do">
+                             <option name="what_do" value="accept" selected>accept</option>
+                             <option name="what_do" value="reject">reject</option></select>
+             </td></tr>
+<tr><td>Dadmin type:</td><td><select size="2" name="dadm_type">
+                             <option name="dadm_type" value="old" selected>old</option>
+                             <option name="dadm_type" value="new">new</option></select>
+             </td></tr>
+
+</table>
+<input type="submit" name="DomainMntChange" value="Change domain maintainer">
+</form>
+<a name="getauctiondomains"></a>
+<p style="text-decoration: underline;">
+<b>Поиск доменов по аукциону:______________<a href="#top">Top</a></b></p>
+<form action="soap_action_getauctiondomains.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>domain name:</td><td><input type="text" name="domain" value=""></td>                           </tr>
+<tr><td>domain lot state:</td><td><select size="3" name="state">
+                             <option name="state" value="ALL" selected>ALL</option>
+                             <option name="state" value="WAITING_START">WAITING_START</option>
+                             <option name="state" value="ACTIVE">ACTIVE</option></select>                      </td> </tr>
+<tr><td>auction start time - from:</td><td><input type="text" name="start_from" value="01-06-2008"></td>                           </tr>
+<tr><td>auction start time - to:</td><td><input type="text" name="start_to" value=""></td>                           </tr>
+<tr><td>auction finish time - from:</td><td><input type="text" name="end_from" value=""></td>                           </tr>
+<tr><td>auction finish time - to:</td><td><input type="text" name="end_to" value=""></td>                           </tr>
+<tr><td>auction price - from:</td><td><input type="text" name="price_from" value=""></td>                           </tr>
+<tr><td>auction price - to:</td><td><input type="text" name="price_to" value=""></td>                           </tr>
+<tr><td>min symbols in domain name:</td><td><input type="text" name="min_symb" value=""></td>                           </tr>
+<tr><td>max symbols in domain name:</td><td><input type="text" name="max_symb" value=""></td>                           </tr>
+<tr><td>min tYC:</td><td><input type="text" name="tyc_from" value=""></td>                           </tr>
+<tr><td>min PR:</td><td><input type="text" name="pr_from" value=""></td>                           </tr>
+<tr><td>mask:</td><td><input type="text" name="mask" value=""></td>                           </tr>
+<tr><td>first registration date:</td><td><input type="text" name="first_reg_date" value=""></td>                           </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>sort field:</td><td><input type="text" name="sort_field" value="domain"></td>                           </tr>
+<tr><td>sort direction:</td><td><input type="text" name="sort_dir" value="asc"></td>                           </tr>
+<tr><td>limit:</td><td><input type="text" name="limit" value="10">  </td>                           </tr>
+<tr><td>pagenum (первая страница - 1):</td><td><input type="text" name="pagenum" value="1"></td>                           </tr>
+<tr><td>Strict? </td><td><input type="checkbox" name="strict" value="1"></td>                           </tr>
+</table>
+<input type="submit" name="getAuctionDomains" value="Get Auction Domains">
+</form>
+
+<a name="getmyauctiondomains"></a>
+<p style="text-decoration: underline;">
+<b>Поиск доменов по аукциону, в которых пользователь участвует:_______<a href="#top">Top</a></b></p>
+<form action="soap_action_getmyauctiondomains.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>domain name:</td><td><input type="text" name="domain" value=""></td>                           </tr>
+<tr><td>domain lot state:</td><td><select size="7" name="state">
+                             <option name="state" value="ALL" selected>ALL</option>
+                             <option name="state" value="ACTIVE">ACTIVE</option>
+                             <option name="state" value="ARCHIVE">ARCHIVE</option>
+                             <option name="state" value="WAIT_WINNER_PAY">WAIT_WINNER_PAY</option>
+                             <option name="state" value="WAIT_VICE_PAY">WAIT_VICE_PAY</option>
+                             <option name="state" value="PAYED">PAYED</option>
+                             <option name="state" value="CANCELLED">CANCELLED</option>
+                             </select>                      </td> </tr>
+<tr><td>auction start time - from:</td><td><input type="text" name="start_from" value="01-06-2008"></td>                           </tr>
+<tr><td>auction start time - to:</td><td><input type="text" name="start_to" value=""></td>                           </tr>
+<tr><td>auction finish time - from:</td><td><input type="text" name="end_from" value=""></td>                           </tr>
+<tr><td>auction finish time - to:</td><td><input type="text" name="end_to" value=""></td>                           </tr>
+<tr><td>auction price - from:</td><td><input type="text" name="price_from" value=""></td>                           </tr>
+<tr><td>auction price - to:</td><td><input type="text" name="price_to" value=""></td>                           </tr>
+<tr><td>min symbols in domain name:</td><td><input type="text" name="min_symb" value=""></td>                           </tr>
+<tr><td>max symbols in domain name:</td><td><input type="text" name="max_symb" value=""></td>                           </tr>
+<tr><td>min tYC:</td><td><input type="text" name="tyc_from" value=""></td>                           </tr>
+<tr><td>min PR:</td><td><input type="text" name="pr_from" value=""></td>                           </tr>
+<tr><td>mask:</td><td><input type="text" name="mask" value=""></td>                           </tr>
+<tr><td>first registration date:</td><td><input type="text" name="first_reg_date" value=""></td>                           </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>sort field:</td><td><input type="text" name="sort_field" value="domain"></td>                           </tr>
+<tr><td>sort direction:</td><td><input type="text" name="sort_dir" value="asc"></td>                           </tr>
+<tr><td>limit:</td><td><input type="text" name="limit" value="10">  </td>                           </tr>
+<tr><td>pagenum (первая страница - 1):</td><td><input type="text" name="pagenum" value="1"></td>                           </tr>
+<tr><td>Strict? </td><td><input type="checkbox" name="strict" value="1"></td>                           </tr>
+</table>
+<input type="submit" name="getMyAuctionDomains" value="Get My Auction Domains">
+</form>
+
+<a name="auctionitem"></a>
+<p style="text-decoration: underline;">
+<b>Действия с аукционным лотом:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a></b></p>
+<form action="soap_action_auctionitem.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>what do:</td><td><select size="4" name="what_do">
+                             <option name="what_do" value="view" selected>view</option>
+                             <option name="what_do" value="bid">bid</option>
+                             <option name="what_do" value="leave">leave</option>
+                             <option name="what_do" value="modify">modify</option>
+                             </select>                      </td> </tr>
+<tr><td>domain name:</td><td><input type="text" name="name" value=""></td>                           </tr>
+<tr><td>bid:</td><td><input type="text" name="bid" value=""></td>                           </tr>
+<tr><td>send notifications (1/0):</td><td><input type="text" name="notify_send" value=""></td>                           </tr>
+<tr><td>use autobroker (1/0):</td><td><input type="text" name="use_autobroker" value=""></td>                           </tr>
+<tr><td>autobroker max bid:</td><td><input type="text" name="autobroker_maxbid" value=""></td>                           </tr>
+</table>
+<input type="submit" name="getMyAuDomains" value="Get My Auction Domains">
+</form>
+
+<a name="takeauctiondomain"></a>
+<p style="text-decoration: underline;">
+<b>Забрать выигранный домен:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#top">Top</a></b></p>
+<form action="soap_action_takeauctiondomain.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td>                               </tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td>                      </tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>domain name:</td><td><input type="text" name="name" value=""></td>                           </tr>
+<tr><td>nic-hdl:</td><td><input type="text" name="nic_hdl" value=""></td>                           </tr>
+</table>
+<input type="submit" name="takeAuctionDomain" value="Take Auction Domain">
+</form>
+
+
+<a name="checkdadminexist"></a>
+<p style="text-decoration: underline;">
+<b>Проверка существования администратора домена___________________<a href="#top">Top</a></b></p>
+<form action="soap_action_checkdadminexists.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value="SAMPLE-NIC"></td></tr>
+</table>
+<input type="submit" name="checkDadminExist" value="Check Dadmin Exist">
+</form>
+
+
+<a name="addnewrrrecord"></a>
+<p style="text-decoration: underline;">
+<b>Добавление новой RR записи_____________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_addnewrrrecord.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domain" value="test-001.ru"></td></tr>
+<tr><td>Record type:</td>
+   <td><select name="type_record">
+   <option name="type_record" value="A">A</option>
+   <option name="type_record" value="AAAA">AAAA</option>
+   <option name="type_record" value="MX">MX</option>
+   <option name="type_record" value="NS">NS</option>
+   <option name="type_record" value="TXT">TXT</option>
+   <option name="type_record" value="CNAME">CNAME</option>
+   <option name="type_record" value="SRV">SRV</option>
+   <option name="type_record" value="SSHFP">SSHFP</option>
+   <option name="type_record" value="PTR">PTR</option>
+   <option name="type_record" value="$GENERATE">$GENERATE</option>
+   </select></td>
+   </tr>
+<tr><td>Host:</td><td><input type="text" name="owner" value=""></td></tr>
+<tr><td>Value:</td><td><input type="text" name="data" value=""></td></tr>
+<tr><td>Priority:</td><td><input type="text" name="pri" value=""></td></tr>
+<tr><td>Weight:</td><td><input type="text" name="weight" value=""></td></tr>
+<tr><td>Port:</td><td><input type="text" name="port" value=""></td></tr>
+<tr><td>Algorithm:</td><td><input type="text" name="sshfp_algorithm" value=""></td></tr>
+<tr><td>Type cast:</td><td><input type="text" name="sshfp_type" value=""></td></tr>
+<tr><td>Comment:</td><td><input type="text" name="info" value=""></td></tr>
+</table>
+<input type="submit" name="addNewRrRecord" value="Add New RR Record">
+</form>
+
+<a name="addnewrrrecordasync"></a>
+<p style="text-decoration: underline;">
+<b>Асинхронное добавление новой rr-записи_________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_addnewrrrecordasync.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domain" value="test-001.ru"></td></tr>
+<tr><td>Record type:</td>
+   <td><select name="type_record">
+   <option name="type_record" value="A">A</option>
+   <option name="type_record" value="AAAA">AAAA</option>
+   <option name="type_record" value="MX">MX</option>
+   <option name="type_record" value="NS">NS</option>
+   <option name="type_record" value="TXT">TXT</option>
+   <option name="type_record" value="CNAME">CNAME</option>
+   <option name="type_record" value="SRV">SRV</option>
+   <option name="type_record" value="SSHFP">SSHFP</option>
+   <option name="type_record" value="PTR">PTR</option>
+   <option name="type_record" value="$GENERATE">$GENERATE</option>
+   </select></td>
+   </tr>
+<tr><td>Host:</td><td><input type="text" name="owner" value=""></td></tr>
+<tr><td>Value:</td><td><input type="text" name="data" value=""></td></tr>
+<tr><td>Priority:</td><td><input type="text" name="pri" value=""></td></tr>
+<tr><td>Weight:</td><td><input type="text" name="weight" value=""></td></tr>
+<tr><td>Port:</td><td><input type="text" name="port" value=""></td></tr>
+<tr><td>Algorithm:</td><td><input type="text" name="sshfp_algorithm" value=""></td></tr>
+<tr><td>Type cast:</td><td><input type="text" name="sshfp_type" value=""></td></tr>
+<tr><td>Comment:</td><td><input type="text" name="info" value=""></td></tr>
+</table>
+<input type="submit" name="addNewRrRecordAsync" value="Add New RR Record Async">
+</form>
+
+
+<a name="getrrrecords"></a>
+<p style="text-decoration: underline;">
+<b>Поиск всех RR записей по зоне__________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_getrrrecords.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domain" value="test-001.ru"></td></tr>
+</table>
+<input type="submit" name="getRrRecords" value="Get RR Records">
+</form>
+
+<a name="editrrrecord"></a>
+<p style="text-decoration: underline;">
+<b>Редактирование RR записи_______________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_editrrrecord.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Record ID:</td><td><input type="text" name="id" value=""></td></tr>
+
+<tr><td>Host:</td><td><input type="text" name="owner" value=""></td></tr>
+<tr><td>Value:</td><td><input type="text" name="data" value=""></td></tr>
+<tr><td>Priority:</td><td><input type="text" name="pri" value=""></td></tr>
+<tr><td>Weight:</td><td><input type="text" name="weight" value=""></td></tr>
+<tr><td>Port:</td><td><input type="text" name="port" value=""></td></tr>
+<tr><td>Algorithm:</td><td><input type="text" name="sshfp_algorithm" value=""></td></tr>
+<tr><td>Type cast:</td><td><input type="text" name="sshfp_type" value=""></td></tr>
+<tr><td>Comment:</td><td><input type="text" name="info" value=""></td></tr>
+</table>
+<input type="submit" name="editRrRecord" value="Edit RR Record">
+</form>
+
+<a name="deleterrrecord"></a>
+<p style="text-decoration: underline;">
+<b>Удаление RR записи_____________________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_deleterrrecord.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Record ID:</td><td><input type="text" name="id" value=""></td></tr>
+</table>
+<input type="submit" name="deleteRrRecord" value="Delete RR Record">
+</form>
+
+<a name="clearzone"></a>
+<p style="text-decoration: underline;">
+<b>Очистить зону от записей (кроме NS)____________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_clearzone.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domain" value="test-001.ru"></td></tr>
+</table>
+<input type="submit" name="DeleteAllRrRecords" value="Delete All Rr Records">
+</form>
+
+
+<a name="getdnstemplates"></a>
+<p style="text-decoration: underline;">
+<b>Получить список доступных шаблонов DNS-записей_________________<a href="#top">Top</a></b></p>
+<form action="soap_action_getdnstemplates.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+</table>
+<input type="submit" name="getDNSTemplates" value="Get DNS Templates">
+</form>
+
+<a name="setdnstemplate"></a>
+<p style="text-decoration: underline;">
+<b>Задать шаблон DNS записей зоне_________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_setdnstemplate.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domain" value=""></td></tr>
+<tr><td>Template ID:</td><td><input type="text" name="temp_id" value=""></td></tr>
+<tr><td>Priority records:</td><td><select size="4" name="record_pri">
+                             <option name="record_pri" value="not_check" selected>Add all</option>
+                             <option name="record_pri" value="exist">Priority of the existing records in the zone</option>
+                             <option name="record_pri" value="new">Priority of new records</option>
+                             <option name="record_pri" value="replace">Complete replacement</option>
+                             </select>                      </td> </tr>
+</table>
+<input type="submit" name="setDnsTemplate" value="Set DNS Template">
+</form>
+
+<a name="checkdomainavailable"></a>
+<p style="text-decoration: underline;">
+<b>Проверка доступности доменного имени для регистрации___________<a href="#top">Top</a></b></p>
+<form action="soap_action_checkdomainavailable.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domain" value="test-001.ru"></td></tr>
+</table>
+<input type="submit" name="checkDomainAvailable" value="Check Domain Available">
+</form>
+
+<a name="changedomaincnodns"></a>
+<p style="text-decoration: underline;">
+<b>Редактирование списка DNS-серверов для международного домена___<a href="#top">Top</a></b></p>
+<form action="soap_action_changedomaincnodnsservers.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domainname" value="test-001.ru"></td></tr>
+<tr><td>Nservers:</td><td><textarea cols="50" rows="7" name="nservers" style="vertical-align:top;">ns1.parkline.ru
+ns2.parkline.ru</textarea><br>
+например:&nbsp;&nbsp;nserver1.domain.ru 195.222.222.221<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+nserver2.domain.ru 195.222.222.222<br></td></tr>
+</table>
+<input type="submit" name="changeDomainCnoNserver" value="Change International Domain DNS Servers">
+</form>
+
+<a name="domaincnotransfer"></a>
+<p style="text-decoration: underline;">
+<b>Передача домена под управление регистратора CENTROHOST________________<a href="#top">Top</a></b></p>
+<form action="soap_action_domaincnotransfer.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Domain:</td><td><input type="text" name="domainname" value=""></td></tr>
+<tr><td>Codeword:</td><td><input type="text" name="codeword" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+<tr><td>Nservers:</td><td><textarea cols="50" rows="7" name="nservers" style="vertical-align:top;">ns1.parkline.ru
+ns2.parkline.ru</textarea><br>
+например:&nbsp;&nbsp;nserver1.domain.ru 195.222.222.221<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+nserver2.domain.ru 195.222.222.222<br></td></tr>
+<tr><td>Hide data:</td><td><input type="checkbox" name="hide_data" value="1"></td></tr>
+</table>
+<input type="submit" name="TransferInternationalDomain" value="Transfer International Domain">
+</form>
+
+<a name="getconfirmscantypes"></a>
+<p style="text-decoration: underline;">
+<b>Получить список типов подтверждающих документов по Nic_hdl_____<a href="#top">Top</a></b></p>
+<form action="soap_action_getconfirmscantypes.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+</table>
+<input type="submit"  class='button' name="getConfirmDocTypes" value="Get Confirm Document Types">
+</form>
+
+<a name="uploadconfirmdoc"></a>
+<p style="text-decoration: underline;">
+<b>Загрузить подтверждающие документы для администратора домена___<a href="#top">Top</a></b></p>
+<form action="soap_action_uploadconfirmscan.php" method="post" enctype="multipart/form-data">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+<tr><td>Type of document:</td><td><input type="text" name="scantype" value=""></td></tr>
+<tr><td>File:</td><td><INPUT type='file'  class='button' name='scan_file' ></td></tr>
+<tr><td>Check checksum:</td><td><input type="checkbox" name="check" value="1"></td></tr>
+</table>
+<input type="submit"  class='button' name="UploadConfirmDoc" value="Upload Confirm Scanned Document">
+</form>
+
+<a name="getabonents"></a>
+<p style="text-decoration: underline;">
+<b>Получить список дочерних абонентов_____________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_getabonents.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+</table>
+<input type="submit" name="getAbonents" value="Get Abonents">
+</form>
+
+<a name="masqueradeas"></a>
+<p style="text-decoration: underline;">
+<b>Фиксация дочернего абонента____________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_masqueradeas.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Agr. number:</td><td><input type="text" name="agr_number" value=""></td></tr>
+</table>
+<input type="submit" name="masqueradeAs" value="Masquerade As">
+</form>
+
+<a name="getlistofregistrars"></a>
+<p style="text-decoration: underline;">
+<b>Получить список доступных регистраторов и стоимостей___________<a href="#top">Top</a></b></p>
+<form action="soap_action_getregistrars.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Zone:</td><td><input type="text" name="zone" value=""></td></tr>
+<tr><td>Service:</td><td><select size="4" name="service">
+                             <option name="service" value="add" selected>add</option>
+                             <option name="service" value="renew">renew</option>
+                             <option name="service" value="transfer">transfer</option>
+                             <option name="service" value="return">return</option>
+                             </select></td></tr>
+</table>
+<input type="submit" name="getRegistrars" value="Get List Of Registrars">
+</form>
+
+
+<a name="getconfirmscans"></a>
+<p style="text-decoration: underline;">
+<b>Получить список загруженных подтверждающих документов _________<a href="#top">Top</a></b></p>
+<form action="soap_action_getconfirmscans.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+</table>
+<input type="submit"  class='button' name="getConfirmDocs" value="Get Documents Downloaded">
+</form>
+
+
+<!--<a name="adddomainrfrequest"></a>
+<p style="text-decoration: underline;">
+<b>Подать заявку на домен .РФ_____________________________________<a href="#top">Top</a></b></p>
+<form action="soap_action_adddomainrfrequest.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+<tr><td>Domain name:</td><td><input type="text" name="domain_name" value=""></td></tr>
+<tr><td>Account type:</td><td>
+&nbsp;Real<input type="radio" name="accounttype" value="real" checked>
+&nbsp;&nbsp;&nbsp;&nbsp;Bonus<input type="radio" name="accounttype" value="bonus">
+&nbsp;&nbsp;&nbsp;&nbsp;Real,bonus<input type="radio" name="accounttype" value="real,bonus">
+&nbsp;&nbsp;&nbsp;&nbsp;Bonus,real<input type="radio" name="accounttype" value="bonus,real"><br>
+</td></tr>
+</table>
+<input type="submit"  class='button' name="addDomainRfRequest" value="Add Domain RF Request">
+</form>-->
+
+<a name="getinfoaboutdadmin"></a>
+<p style="text-decoration: underline;">
+<b>Получить информацию об администраторе доменов__________________<a href="#top">Top</a></b></p>
+<form action="soap_action_getinfoaboutdadmin.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>Nic_Hdl:</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+</table>
+<input type="submit"  class='button' name="getInfoAboutDadmin" value="Get Info About Dadmin">
+</form>
+
+<a name="getdomainsallsimple"></a>
+<p style="text-decoration: underline;">
+<b>Поиск всех доменов на договоре:_____________________<a href="#top">Top</a></b></p>
+<form action="soap_action_getdomainsallsimple.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+</table>
+<input type="submit" name="getAllDomains" value="Get All Domains">
+</form>
+
+
+<a name="getdadmins"></a>
+<p style="text-decoration: underline;">
+<b>Поиск администраторов доменов по введенным параметрам:<a href="#top">Top</a></b></p>
+<form action="soap_action_getdadmins.php" method="post">
+<table>
+<tr><td>Login:</td><td><input type="text" name="login" value=""></td></tr>
+<tr><td>Password:</td><td><input type="password" name="password" value=""></td></tr>
+<tr><td>---------</td><td></td></tr>
+
+<tr><td>admin-o (nic-hdl):</td><td><input type="text" name="nic_hdl" value=""></td></tr>
+<tr><td>dadmin name (ru):</td><td><input type="text" name="fiorus" value=""></td></tr>
+<tr><td>dadmin name (eng):</td><td><input type="text" name="fioeng" value=""></td></tr>
+<tr><td>dadmin type:</td><td><select size="3" name="is_org">
+                             <option name="is_org" value="ALL" selected>ALL</option>
+                             <option name="is_org" value="ORG">ORG</option>
+                             <option name="is_org" value="PERSON">PERSON</option></select></td></tr>
+<tr><td>E-mail:</td><td><input type="text" name="e_mail" value=""></td></tr>
+<tr><td>Simplified administrator change:</td>
+<td>
+<input type='radio' name='simplech' value='ALL'> Not important </br>
+<input type='radio' name='simplech' value='1'> On </br>
+<input type='radio' name='simplech' value='0'> Off </br>
+</td></tr>
+
+<tr><td>Default domain admin:</td><td><input type="checkbox" name="default" value="1"></td></tr>
+<tr><td>---------</td><td></td></tr>
+<tr><td>sort field:</td><td><input type="text" name="sort_field" value=""></td></tr>
+<tr><td>sort direction:</td><td><input type="text" name="sort_dir" value=""></td></tr>
+<tr><td>limit:</td><td><input type="text" name="limit" value="10">  </td></tr>
+<tr><td>pagenum (первая страница - 1):</td><td><input type="text" name="pagenum" value="1"></td></tr>
+<tr><td>Strict? </td><td><input type="checkbox" name="strict" value="1"></td></tr>
+</table>
+<input type="submit" name="getDadmins" value="Get Dadmins">
+</form>
+
+
+</body>
+</html>
