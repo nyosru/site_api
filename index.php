@@ -40,7 +40,7 @@
         <div class="container">
 
 
-        <div class="row">
+            <div class="row">
                 <div class="col-sm-12 col-md-12 col-xl-12">
                     <h1>Whois</h1>
 
