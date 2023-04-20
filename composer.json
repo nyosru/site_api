@@ -4,6 +4,7 @@
         "true/punycode": "^2.1",
         "telegram-bot/api": "^2.3",
         "facebook/graph-sdk": "^5.7",
-        "didrive/base": "^1.1"
+        "didrive/base": "^1.1",
+        "io-developer/php-whois": "^4.1"
     }
 }
