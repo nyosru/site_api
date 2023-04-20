@@ -38,6 +38,26 @@
         </section>
 
         <div class="container">
+
+
+        <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <h1>Whois</h1>
+
+                    <div id="t1" style='margin-left: 20px; padding-left:20px;border-left: 3px solid rgba(0,255,0,0.2);'>
+
+                        <h3>Доступен домен для реги или нет</h3>
+                        <pre>
+<code>
+http://api.php-cat.com/whois.php?domain=stu.com&return=json
+</code>
+                            </pre>
+
+                    </div>
+                </div>
+            </div>
+
+
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-xl-12">
                     <h1>Telegram</h1>
@@ -93,7 +113,8 @@ const sendToTelegramm = async (msg) => {
         return 'errored';
     }
 
-}</code>
+}
+</code>
                             </pre>
                         <h3>шлём тех оповещение в бот @UralwebBot</h3>
                         <pre>
