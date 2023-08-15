@@ -118,7 +118,22 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
         }
 
         if( !empty($_REQUEST['dopinfo']) ){
-            $return['info'] = (array) $whois->loadDomainInfo($_REQUEST['domain']);
+
+            $t = $whois->loadDomainInfo($_REQUEST['domain']);
+            $return['info'] = [];
+//                'Domain created' => date("Y-m-d", $t->creationDate),
+//                'Domain expires' => date("Y-m-d", $t->expirationDate),
+//                'Domain owner' => $info->owner,
+
+            foreach( $t as $k => $v ){
+                if( $k == 'creationDate' ){
+                    $return['info'][$k] = date("Y-m-d", $v);
+                }else {
+                    $return['info'][$k] = $v;
+                }
+            }
+
+
         }
 
     } catch (ConnectionException $e) {
