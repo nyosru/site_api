@@ -83,6 +83,7 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
         $return['status'] = 1;
 
         if ($whois->isDomainAvailable($_REQUEST['domain'])) {
+
             $return['available'] = true;
             // print "Bingo! Domain is available! :)";
 
@@ -115,6 +116,11 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             print $info->domainName . " expires at: " . date("d.m.Y H:i:s", $info->expirationDate);
             // echo '<pre>', print_r($info), '</pre>';
         }
+
+        if( !empty($REQUEST['dopinfo']) ){
+            $return['info']Ï = $whois->loadDomainInfo("google.com");
+        }
+
     } catch (ConnectionException $e) {
         print "Disconnect or connection timeout";
     } catch (ServerMismatchException $e) {
@@ -122,7 +128,6 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
     } catch (WhoisException $e) {
         print "Whois server responded with error '{$e->getMessage()}'";
     }
-
 
     die(json_encode($return));
 }
