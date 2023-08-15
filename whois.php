@@ -117,8 +117,8 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             // echo '<pre>', print_r($info), '</pre>';
         }
 
-        if( !empty($REQUEST['dopinfo']) ){
-            $return['info'] = $whois->loadDomainInfo("google.com");
+        if( !empty($_REQUEST['dopinfo']) ){
+            $return['info'] = $whois->loadDomainInfo($_REQUEST['domain']);
         }
 
     } catch (ConnectionException $e) {
