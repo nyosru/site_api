@@ -124,7 +124,8 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
 //                'Domain created' => date("Y-m-d", $t->creationDate),
 //                'Domain expires' => date("Y-m-d", $t->expirationDate),
 //                'Domain owner' => $info->owner,
-var_dump($t);
+//var_dump($t);
+var_dump($t->rootFilter[0] ?? []);
             foreach( $t as $k => $v ){
                 if( $k == 'creationDate' ){
                     $return['info'][$k] = date("Y-m-d", $v);
