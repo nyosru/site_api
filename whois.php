@@ -118,7 +118,7 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
                         $return['info'][$k.$k1 ] = $v1;
                     }
                 } else {
-                    $return['info'][$k] = $v;
+                    $return['info'][$k == 'domainName' ? 'domain' : $k ] = $v;
                 }
             }
         }
