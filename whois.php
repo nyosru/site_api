@@ -106,10 +106,21 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             // print "NO Bingo! Domain is unavailable! :)";
 
             $t = $whois->loadDomainInfo($_REQUEST['domain']);
-            echo 'Domain created: ' . date("Y-m-d", $t->creationDate) . '<br/>'
-                . 'Domain expires: ' . date("Y-m-d", $t->expirationDate) . '<br/>'
-                . 'Domain owner: ' . $t->owner;
-            echo '<pre>'; var_dump($t); echo '</pre>';
+            $return['info'] = [];
+
+            $t2 = $t->getData();
+
+            foreach ($t2 as $k => $v) {
+                if ( strpos($k, 'Date' ) !== false ) {
+                    $return['info'][$k] = date("Y-m-d", $v);
+                } else if( is_array($v) ) {
+                    foreach( $v as $k1 => $v1 ) {
+                        $return['info'][$k.$k1 ] = $v1;
+                    }
+                } else {
+                    $return['info'][$k] = $v;
+                }
+            }
         }
 
         if (1 == 2) {
