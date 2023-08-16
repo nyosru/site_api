@@ -111,6 +111,10 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             $t2 = $t->getData();
 
             foreach ($t2 as $k => $v) {
+
+                if( empty($v) )
+                    continue;
+
                 if ( strpos($k, 'Date' ) !== false && is_numeric($v) ) {
                     $return['info'][$k] = date("Y-m-d", $v);
                 } else if( is_array($v) ) {
