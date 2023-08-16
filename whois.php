@@ -82,6 +82,7 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
         $return['domain'] = $_REQUEST['domain'];
         $return['status'] = 1;
 
+        // если доступен для реги
         if ($whois->isDomainAvailable($_REQUEST['domain'])) {
 
             $return['available'] = true;
@@ -89,20 +90,26 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
 
             if (!empty($_REQUEST['sendTelegramm'])) {
                 file_get_contents('https://api.php-cat.com/telegram.php?' . http_build_query(
-                    array(
-                        // order ura bot
-                        'token' => '5960307100:AAHshaEf6WXw4rKbDg-JCeAyOEsFoHqZmNA',
-                        's' => '1',
-                        // 'id' => $to, // id кому пишем
-                        'msg' => 'Домен ' . $_REQUEST['domain'] . ' доступен дял регистрации' // текст сообщения
-                    )
-                ));
+                        array(
+                            // order ura bot
+                            'token' => '5960307100:AAHshaEf6WXw4rKbDg-JCeAyOEsFoHqZmNA',
+                            's' => '1',
+                            // 'id' => $to, // id кому пишем
+                            'msg' => 'Домен ' . $_REQUEST['domain'] . ' доступен дял регистрации' // текст сообщения
+                        )
+                    ));
             }
-            
-        } else {
+
+        } // если НЕ доступен для реги
+        else {
             $return['available'] = false;
             // print "NO Bingo! Domain is unavailable! :)";
 
+            $t = $whois->loadDomainInfo($_REQUEST['domain']);
+            echo 'Domain created: ' . date("Y-m-d", $t->creationDate) . '<br/>'
+                . 'Domain expires: ' . date("Y-m-d", $t->expirationDate) . '<br/>'
+                . 'Domain owner: ' . $t->owner;
+            echo '<pre>'; var_dump($t); echo '</pre>';
         }
 
         if (1 == 2) {
@@ -117,25 +124,27 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             // echo '<pre>', print_r($info), '</pre>';
         }
 
-        if( !empty($_REQUEST['dopinfo']) ){
-
-            $t = $whois->loadDomainInfo($_REQUEST['domain']);
-            $return['info'] = [];
-//                'Domain created' => date("Y-m-d", $t->creationDate),
-//                'Domain expires' => date("Y-m-d", $t->expirationDate),
-//                'Domain owner' => $info->owner,
-//var_dump($t);
-var_dump($t->rootFilter[0] ?? []);
-            foreach( $t as $k => $v ){
-                if( $k == 'creationDate' ){
-                    $return['info'][$k] = date("Y-m-d", $v);
-                }else {
-                    $return['info'][$k] = $v;
-                }
-            }
+//        if( !empty($_REQUEST['dopinfo']) ){
+//
+//            $t = $whois->loadDomainInfo($_REQUEST['domain']);
 
 
-        }
+//            $return['info'] = [];
+////                'Domain created' => date("Y-m-d", $t->creationDate),
+////                'Domain expires' => date("Y-m-d", $t->expirationDate),
+////                'Domain owner' => $info->owner,
+////var_dump($t);
+////var_dump($t->rootFilter[0] ?? []);
+//            foreach( $t as $k => $v ){
+//                if( $k == 'creationDate' ){
+//                    $return['info'][$k] = date("Y-m-d", $v);
+//                }else {
+//                    $return['info'][$k] = $v;
+//                }
+//            }
+//
+//
+//        }
 
     } catch (ConnectionException $e) {
         print "Disconnect or connection timeout";
