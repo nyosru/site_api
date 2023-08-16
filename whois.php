@@ -111,7 +111,7 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             $t2 = $t->getData();
 
             foreach ($t2 as $k => $v) {
-                if ( strpos($k, 'Date' ) !== false ) {
+                if ( strpos($k, 'Date' ) !== false && strpos($v,'-') === false ) {
                     $return['info'][$k] = date("Y-m-d", $v);
                 } else if( is_array($v) ) {
                     foreach( $v as $k1 => $v1 ) {
