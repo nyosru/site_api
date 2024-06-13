@@ -69,7 +69,7 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            docker exec site_api composer i --no-dev            
+            docker exec site_api cd ${{ env.DIR }} && composer.phar i --no-dev            
 
 
   sms_start:
