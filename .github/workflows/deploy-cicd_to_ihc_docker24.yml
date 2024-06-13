@@ -4,7 +4,7 @@ name: Deploy bu docker
 env:
   VPS_IP: 91.218.230.97
   VPS_USERNAME: root
-  DIR: /home/docker
+  DIR: /home/site_api
   GIT_BRANCH: origin/cicd_to_ihc_docker24
 
 on:
