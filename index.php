@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Описание API интерфейсов для проектов uralweb">
-    <title>API 1 php-cat.com</title>
+    <title>API 2xs php-cat.com</title>
 
     <link rel="icon" href="https://uralweb.info/9.site/my1807uralweb/download/img/fav.png" type="image/x-icon">
 
