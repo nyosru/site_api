@@ -5,6 +5,7 @@ env:
   VPS_IP: 91.218.230.97
   VPS_USERNAME: root
   DIR: /home/site_api
+  DOCKER_CONTAINER: site_api
   GIT_BRANCH: origin/cicd_to_ihc_docker24
 
 on:
@@ -69,7 +70,7 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            docker exec site_api php composer.phar i --no-dev            
+            docker exec ${{ env.DOCKER_CONTAINER }} php composer.phar i --no-dev            
 
 
   sms_start:
@@ -85,6 +86,7 @@ jobs:
             🐥🐥🐥 ${{ github.repository }} 
             ${{ github.event_name }} > ${{ github.event.head_commit.message }}
             👨🏻‍💻 ${{github.actor}} (${{ github.run_id }})
+            контейнер ${{ env.DOCKER_CONTAINER }}
 
 
 
