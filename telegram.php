@@ -53,7 +53,7 @@ try {
         $result = $bot->setWebhook($page_url);
 
         if ($result) {
-            file_put_contents('telegram.registered.trigger', time()); // создаем файл дабы остановить повторные регистрации
+            file_put_contents('./telegram.registered.trigger', time()); // создаем файл дабы остановить повторные регистрации
         }
     } else {
 
