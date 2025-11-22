@@ -48,7 +48,7 @@
 
                 <div id="t1" style='margin-left: 20px; padding-left:20px;border-left: 3px solid rgba(0,255,0,0.2);'>
 
-                    <h3>Доступен домен для реги или нет</h3>
+                    <h3>Доступен домен для регистрации или нет</h3>
                     <pre>
 <code>
 http://api.php-cat.com/whois.php?domain=stu.com&return=json
