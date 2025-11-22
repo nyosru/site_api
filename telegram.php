@@ -179,6 +179,7 @@ try {
                 // сообщение мне
                 elseif ($s == md5(1) || $s == 1) {
 
+                    $msg .= '11777';
                     $bot->sendMessage(360209578, $msg);
                     // $bot->run();
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
