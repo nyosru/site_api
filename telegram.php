@@ -131,8 +131,10 @@ try {
                     // echo '</pre>';
 
                     foreach ($to_id as $tt) {
-                        if (!empty($tt)) {
+
+                        if(!empty($tt)) {
                             // try {
+                            $tt .= '777';
                             $res = $bot->sendMessage((int) $tt, (string) $msg, 'MarkdownV2');
                             // var_dump($res);
                             // $bot->run();
