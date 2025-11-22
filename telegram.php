@@ -133,7 +133,7 @@ try {
                     foreach ($to_id as $tt) {
                         if (!empty($tt)) {
                             // try {
-                            $res = $bot->sendMessage((int) $tt, (string) $msg);
+                            $res = $bot->sendMessage((int) $tt, (string) $msg, 'MarkdownV2');
                             // var_dump($res);
                             // $bot->run();
                             // } catch (\Exception $ex) {
