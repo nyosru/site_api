@@ -179,8 +179,8 @@ try {
                 // сообщение мне
                 elseif ($s == md5(1) || $s == 1) {
 
-                    $msg .= '11777';
-                    $bot->sendMessage(360209578, $msg);
+//                    $msg .= ___FILE__.' '.__LINE__;
+                    $bot->sendMessage(360209578, $msg, 'MarkdownV2');
                     // $bot->run();
                     if (!empty($v['answer']) && $v['answer'] == 'json') {
                         die(json_encode([
