@@ -41,7 +41,8 @@ try {
     // unlink('telegram.registered.trigger');
 
     // Оставляем только разрешённые символы: буквы, цифры, подчёркивание, дефис, точку
-    $safe_token = preg_replace('/[^a-zA-Z0-9._-]/', '', $token);
+//    $safe_token = preg_replace('/[^a-zA-Z0-9._-]/', '', $token);
+    $safe_token = $token;
     $file_name = $safe_token.'telegram.registered.trigger';
 
     if (!file_exists($file_name)) {
