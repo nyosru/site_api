@@ -43,9 +43,10 @@ try {
     // Оставляем только разрешённые символы: буквы, цифры, подчёркивание, дефис, точку
 //    $safe_token = preg_replace('/[^a-zA-Z0-9._-]/', '', $token);
     $safe_token = $token;
-    $file_name = $safe_token.'telegram.registered.trigger';
+//    $file_name = $safe_token.'telegram.registered.trigger';
+    $file_name = 'telegram.registered.trigger';
 
-    if (!file_exists($file_name)) {
+    if (!file_exists('./'.$file_name)) {
 
         /**
          * файл registered.trigger будет создаваться после регистрации бота.
