@@ -39,7 +39,12 @@ try {
 
     // если бот еще не зарегистрирован - регистрируем
     // unlink('telegram.registered.trigger');
-    if (!file_exists('telegram.registered.trigger')) {
+
+    // Оставляем только разрешённые символы: буквы, цифры, подчёркивание, дефис, точку
+    $safe_token = preg_replace('/[^a-zA-Z0-9._-]/', '', $token);
+    $file_name = $safe_token.'telegram.registered.trigger';
+
+    if (!file_exists($file_name)) {
 
         /**
          * файл registered.trigger будет создаваться после регистрации бота.
@@ -53,7 +58,7 @@ try {
         $result = $bot->setWebhook($page_url);
 
         if ($result) {
-            file_put_contents('./telegram.registered.trigger', time()); // создаем файл дабы остановить повторные регистрации
+            file_put_contents('./'.$file_name, time()); // создаем файл дабы остановить повторные регистрации
         }
     } else {
 
@@ -134,8 +139,10 @@ try {
 
                         if(!empty($tt)) {
                             // try {
-                            $tt .= '777';
-                            $res = $bot->sendMessage((int) $tt, (string) $msg, 'MarkdownV2');
+//                            $tt .= '777';
+                            $res = $bot->sendMessage((int) $tt, (string) $msg
+//                                , 'MarkdownV2'
+                            );
                             // var_dump($res);
                             // $bot->run();
                             // } catch (\Exception $ex) {
