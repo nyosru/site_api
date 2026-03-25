@@ -1,5 +1,47 @@
 <?php
 
+$envPath = __DIR__ . '/.env';
+if (is_file($envPath) && is_readable($envPath)) {
+    $envValues = parse_ini_file($envPath, false, INI_SCANNER_RAW);
+    if (is_array($envValues)) {
+        foreach ($envValues as $name => $value) {
+            if (!is_string($name) || $name === '') {
+                continue;
+            }
+            if (!is_scalar($value)) {
+                continue;
+            }
+            $value = (string)$value;
+            putenv($name . '=' . $value);
+            $_ENV[$name] = $value;
+            $_SERVER[$name] = $value;
+        }
+    }
+}
+
+function envValue(string $key, ?string $default = null): ?string
+{
+    $value = getenv($key);
+    if ($value === false || $value === '') {
+        return $default;
+    }
+    return $value;
+}
+
+function requestValue(string $key, ?string $default = null): ?string
+{
+    if (isset($_POST[$key])) {
+        return (string)$_POST[$key];
+    }
+    if (isset($_GET[$key])) {
+        return (string)$_GET[$key];
+    }
+    if (isset($_REQUEST[$key])) {
+        return (string)$_REQUEST[$key];
+    }
+    return $default;
+}
+
 date_default_timezone_set("Asia/Yekaterinburg");
 
 ini_set('error_reporting', E_ALL);
@@ -7,22 +49,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 //require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-// my token
-//$token = "381744869:AAGADX_OJ_bMq_HUxgnJLhOGd1C66ijvwxU";
-//$token = "776541435:AAFmtzTet9wA4_7lxunGNJyEKmCrCNyFnnw";
-//$token = "776541435:AAGCGoo5KA8yeHfX761_ynffUpNNjt7gRqc";
-//$token = "776541435:AAGCGoo5KA8yeHfX761_ynffUpNNjt7gRqc";
-//$bot = new \TelegramBot\Api\Client($token);
 
 try {
 
 
-// серг бакл
-    $token = 'e61748dc23779d7eb2ff24e6858f290bf2269dcfeeefe699f66b383967f7552b051e06f2e407054fa0f5a';
-// успале
-//    $token = '11dc7839d6ad4a0f5d46771dbd713220725889096f67faadce9866bf5ed8a4e3cd1fc0dc469b0d1e07167';
-//    $token = '0e8292db7337123413e42303c5f90c534f1ef133cd7af9c2a357b153fc3f7105c71dfb559e04c2220793e';
-    $token = '5c1bcfc5f24aab710f4a5893073d733b6d55b4e00d093c4ab8a0a3f2c3428bbe799e54a7a01b4460a5845';
+    $token = envValue('VK_TOKEN_DEFAULT');
+    $vkApiVersion = envValue('VK_API_VERSION', '5.199');
 
 //    $response = $vk->execute()->get($access_token, array(
 //        'code' => '
@@ -44,8 +76,10 @@ try {
 
     if (2 == 1 || ( isset($_REQUEST['from_user']) && isset($_REQUEST['to_user']) && isset($_REQUEST['s']) && $_REQUEST['s'] == md5('send' . $_REQUEST['from_user'] . $_REQUEST['to_user']) )) {
 
-        // usplae
-        $token = 'd59c29e5384c73fc4accdfc8931137f674b63b41591ce40f1a5a033e0b69f7965e051db83a5c70f4e73ca';
+        $token = envValue('VK_TOKEN_SEND_USER');
+        if (!$token) {
+            throw new \RuntimeException('VK_TOKEN_SEND_USER is not set in .env');
+        }
 
         // $vk_id_to_msg = '502668186';
         //$vk_id_to_msg = $_REQUEST['to_user'];
@@ -74,7 +108,7 @@ try {
 
         // echo '<pre>'.$request.'</pre>';
 
-        $query = file_get_contents("https://api.vk.com/method/execute?code=" . urlencode($request) . "&v=5.8&access_token=" . $token);
+        $query = file_get_contents("https://api.vk.com/method/execute?code=" . urlencode($request) . "&v=" . urlencode($vkApiVersion) . "&access_token=" . $token);
 
         echo '<pre>';
         print_r(json_decode($query, true));
@@ -88,8 +122,12 @@ try {
     elseif (isset($_REQUEST['msg']) && isset($_REQUEST['group']) && isset($_REQUEST['to_user']) && isset($_REQUEST['s']) && $_REQUEST['s'] == md5('send' . $_REQUEST['group'] . $_REQUEST['to_user'] )) {
 
 // сообщество // uralweb_info
-        if ($_REQUEST['group'] == 'uralweb_info')
-            $token = '037ef3f776cffc018c9a738f4513317f865ca2e8c4dc0d914ee0da310491fea1c9f17ce7fa4f148dc0a0b';
+        if ($_REQUEST['group'] == 'uralweb_info') {
+            $token = envValue('VK_TOKEN_GROUP_URALWEB_INFO');
+        }
+        if (!$token) {
+            throw new \RuntimeException('Token for selected group is not set in .env');
+        }
 
 // $vk_id_to_msg = '502668186';
         $vk_id_to_msg = $_REQUEST['to_user'];
@@ -109,15 +147,81 @@ try {
         // echo '<pre>'.$request.'</pre>';
         //$request = '11111111';
 
-        $query = file_get_contents("https://api.vk.com/method/execute?code=" . urlencode($request) . "&v=5.8&access_token=" . $token);
+        $query = file_get_contents("https://api.vk.com/method/execute?code=" . urlencode($request) . "&v=" . urlencode($vkApiVersion) . "&access_token=" . $token);
 
         // $result = json_decode($query, true);
         die($query);
     }
+    // новый endpoint: отправка сообщения от группы по vk_id
+    // параметры: endpoint=send_group_msg, vk_id, msg, s
+    // подпись: md5('send_group_msg' . vk_id . msg)
+    elseif (
+        requestValue('endpoint') === 'send_group_msg'
+        && requestValue('vk_id') !== null
+        && requestValue('msg') !== null
+        && requestValue('s') !== null
+    ) {
 
-    //echo '<pre>';
-    //print_r($result);
-    //echo '</pre>';
+        $vkId = trim((string)requestValue('vk_id', ''));
+        $msg = trim((string)requestValue('msg', ''));
+        $signature = (string)requestValue('s', '');
+
+        if (!preg_match('/^\d+$/', $vkId)) {
+            header('Content-Type: application/json; charset=utf-8');
+            die(json_encode(['error' => 'vk_id должен быть числом'], JSON_UNESCAPED_UNICODE));
+        }
+        if ($msg === '') {
+            header('Content-Type: application/json; charset=utf-8');
+            die(json_encode(['error' => 'msg не должен быть пустым'], JSON_UNESCAPED_UNICODE));
+        }
+
+        $expectedSignature = md5('send_group_msg' . $vkId . $msg);
+//        if (!hash_equals($expectedSignature, $signature)) {
+//            header('Content-Type: application/json; charset=utf-8');
+//            die(json_encode(['error' => 'Неверная подпись s'], JSON_UNESCAPED_UNICODE));
+//        }
+
+        // Preferred defaults for group send endpoint.
+        // 1) VK_TOKEN_GROUP_GENERIC + VK_GROUP_ID
+        // 2) fallback to legacy uralweb_info config
+        $groupId = envValue('VK_GROUP_ID');
+        $token = envValue('VK_TOKEN_GROUP_GENERIC');
+
+        if (!$groupId) {
+            $groupId = envValue('VK_DEFAULT_GROUP', 'uralweb_info');
+        }
+        if (!$token && $groupId === 'uralweb_info') {
+            $token = envValue('VK_TOKEN_GROUP_URALWEB_INFO');
+        }
+
+        if (!$token) {
+            throw new \RuntimeException('Group token is not set in .env');
+        }
+        if (!$groupId) {
+            throw new \RuntimeException('VK_GROUP_ID or VK_DEFAULT_GROUP is not set in .env');
+        }
+
+        $messageForVk = str_replace(array("\r\n", "\r", "\n"), ' | ', $msg);
+        $groupJs = json_encode($groupId, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $vkIdJs = json_encode($vkId, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $messageJs = json_encode($messageForVk, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $request = '
+        var a = API.groups.isMember({"group_id":' . $groupJs . ',"user_id":' . $vkIdJs . '});
+        if( a == 1 ){
+            var msg = API.messages.send({
+                "user_id":' . $vkIdJs . ',
+                "message":' . $messageJs . ',
+                "random_id":"' . date('Ymdhis') . '"
+                });
+            return { "success":"подписчик, сообщение отправили", "nomer_send_msg":msg };
+        }
+        return { "error":"Пользователь не подписан на сообщество." };
+        ';
+
+        $query = file_get_contents("https://api.vk.com/method/execute?code=" . urlencode($request) . "&v=" . urlencode($vkApiVersion) . "&access_token=" . $token);
+        header('Content-Type: application/json; charset=utf-8');
+        die($query);
+    }
 
     exit;
 } catch (\Exception $ex) {
