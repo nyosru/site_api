@@ -17,7 +17,7 @@ if (isset($_REQUEST)) {
     file_put_contents('fb.' . date('YmdHis') . '.txt', json_encode($_REQUEST));
 }
 
-$env = parse_ini_file('./.env');
+$env = parse_ini_file( $_SERVER['DOCUMENT_ROOT'] .'/.env');
 
 $fb = new \Facebook\Facebook([
     'app_id' => $env['FACEBOOK_app_id'],

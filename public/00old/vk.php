@@ -1,6 +1,6 @@
 <?php
 
-$envPath = __DIR__ . '/.env';
+$envPath =  $_SERVER['DOCUMENT_ROOT'] . '/.env';
 if (is_file($envPath) && is_readable($envPath)) {
     $envValues = parse_ini_file($envPath, false, INI_SCANNER_RAW);
     if (is_array($envValues)) {
@@ -63,14 +63,14 @@ try {
 //        '));
 //    $request = '
 //        var a = API.friends.areFriends({"user_ids":"5903492","need_sign":"0"});
-//        
+//
 //        if( a[0].friend_status < 2 ){
 //            return { "error":"Мы не друзья, послать сообщение не получилось." };
 //        }else{
 //            var msg = API.messages.send({"user_id":"5903492","message":"Привет дружок","random_id":"'.date('Ymdhis').'"});
 //            return { "result":"окей друзья", "msgs":msg };
 //        }
-//        
+//
 //        ';
 // отправка от чела челу
 
@@ -88,7 +88,7 @@ try {
 
         $request = '
         var a = API.friends.areFriends({"user_ids":"' . $vk_id_to_msg . '"});
-        
+
         //return a;
 
         if( a[0].friend_status > 1 ){

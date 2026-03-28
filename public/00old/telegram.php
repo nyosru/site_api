@@ -6,14 +6,11 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: POST,GET,OPTION");
 header("Access-Control-Allow-Headers: *");
 
-
 if (!defined('IN_NYOS_PROJECT'))
     define('IN_NYOS_PROJECT', TRUE);
 
-if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'))
-    require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-
-
+if (file_exists(__DIR__ . '/vendor/autoload.php'))
+    require __DIR__ . '/vendor/autoload.php';
 
 
 // входящие данные
@@ -21,7 +18,7 @@ $v1 = file_get_contents("php://input");
 $array =
     $v = json_decode($v1, true);
 
-$env = parse_ini_file('./.env');
+$env = parse_ini_file( $_SERVER['DOCUMENT_ROOT'] .'/.env');
 
 $token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '';
 
@@ -112,8 +109,8 @@ try {
                             $to_id = $_GET['id'];
                         } else {
                             $to_id[] = $_GET['id'];
-                        }                    
-                    } 
+                        }
+                    }
                     elseif (!empty($array['id'])) {
                         if (is_array($array['id'])) {
                             $to_id = $array['id'];

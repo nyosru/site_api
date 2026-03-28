@@ -1,0 +1,13 @@
+[local]
+;type = sqllite
+;type = mysql // по умолчанию
+table = acms3
+login = root
+pass = 
+host = localhost
+
+[server]
+table = acms3
+login = u3
+pass = F6y8B2n2
+host = localhost

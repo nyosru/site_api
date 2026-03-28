@@ -42,8 +42,8 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
     // ssoap::start();
     // ssoap::login('BAklAnOvSS','123_Uralweb');
 
-    // exec("whois ".$domain,$output,$return_var); 
-    // exec("whois ".$_REQUEST['domain'],$output,$return_var); 
+    // exec("whois ".$domain,$output,$return_var);
+    // exec("whois ".$_REQUEST['domain'],$output,$return_var);
 
     // foreach ($output as $line){
     // echo $line.'<br>';
@@ -88,17 +88,17 @@ if (!empty($_REQUEST['domain']) && isset($_REQUEST['return']) && $_REQUEST['retu
             $return['available'] = true;
             // print "Bingo! Domain is available! :)";
 
-            if (!empty($_REQUEST['sendTelegramm'])) {
-                file_get_contents('https://api.php-cat.com/telegram.php?' . http_build_query(
-                        array(
-                            // order ura bot
-                            'token' => '5960307100:AAHshaEf6WXw4rKbDg-JCeAyOEsFoHqZmNA',
-                            's' => '1',
-                            // 'id' => $to, // id кому пишем
-                            'msg' => 'Домен ' . $_REQUEST['domain'] . ' доступен дял регистрации' // текст сообщения
-                        )
-                    ));
-            }
+//            if (!empty($_REQUEST['sendTelegramm'])) {
+//                file_get_contents('https://api.php-cat.com/telegram.php?' . http_build_query(
+//                        array(
+//                            // order ura bot
+//                            'token' => '596030EsFoHqZmNA',
+//                            's' => '1',
+//                            // 'id' => $to, // id кому пишем
+//                            'msg' => 'Домен ' . $_REQUEST['domain'] . ' доступен дял регистрации' // текст сообщения
+//                        )
+//                    ));
+//            }
 
         } // если НЕ доступен для реги
         else {
