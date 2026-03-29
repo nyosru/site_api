@@ -13,7 +13,10 @@ Route::any('/telegram', TelegramController::class);
 Route::any('/telegram/webhook', TelegramWebhookController::class);
 
 $text = 'api';
-
+$v1 = file_get_contents("php://input");
+$array =
+$v = json_decode($v1, true);
+$text = $v1;
 Log::info('telegram webhook received', [
     'update_id' => $payload['update_id'] ?? null,
     'telegram_user_id' => $from['id'] ?? null,
