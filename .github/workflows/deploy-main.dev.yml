@@ -1,0 +1,197 @@
+name: Deploy api service to VPS with Git Reset
+
+env:
+  VPS_HOST: 91.218.230.97
+  VPS_USERNAME: root
+  DIR: /home/site_api
+  GIT_BRANCH: origin/main
+  GITHUB_USERNAME: nyosru
+  GIT_REPO: site_api.git
+  DOCKER_CONTAINER: site_api
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Run Laravel tests on server
+        id: run_tests
+        run: |
+          set +e
+
+          OUTPUT=$(ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} '
+
+            cd ${{ env.DIR }} &&
+            git fetch --all &&
+            git reset --hard ${{ env.GIT_BRANCH }} &&
+
+            echo "=== INSTALL DEV DEPENDENCIES ===" &&
+            docker exec ${{ env.DOCKER_CONTAINER }} composer install &&
+
+            echo "=== go migrate ===" &&
+            docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate &&
+
+            echo "=== RUN TESTS ===" &&
+            docker exec ${{ env.DOCKER_CONTAINER }} php artisan test 2>&1
+          ')
+
+          echo "$OUTPUT"
+
+          echo "test_output<<EOF" >> $GITHUB_OUTPUT
+          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "$OUTPUT" | grep -E "FAIL|ERROR|Tests:.*Failures"
+          if [ $? -eq 0 ]; then
+            echo "❌ TESTS FAILED"
+            exit 1
+          fi
+
+      - name: Send Telegram if tests failed
+        if: failure()
+        uses: appleboy/telegram-action@master
+        with:
+          to: 360209578, phpcat
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🚨 ТЕСТЫ УПАЛИ
+            Repo: ${{ github.repository }}
+            Actor: ${{ github.actor }}
+            Commit: ${{ github.event.head_commit.message }}
+
+            Ошибка:
+            ${{ steps.run_tests.outputs.test_output }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: tests
+
+    steps:
+      - name: Check commit message
+        id: check_commit
+        run: |
+          check_rebuild() {
+            [[ "${{ github.event.head_commit.message }}" == *"[$1+"* ]] && echo "true" || echo "false"
+          }
+          echo "start_setup=$(check_rebuild 'start_setup')" >> $GITHUB_OUTPUT
+
+#      - name: Dep1
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ env.VPS_HOST }}  # Или secrets.VPS_HOST, если храните как secret
+#          username: ${{ env.VPS_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Здесь используется ключ из secrets
+#          script: |
+#            cd ${{ env.DIR }}
+#            git pull origin main
+
+
+
+      - name: Set up SSH (with debug)
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "Home dir: $HOME"
+          ls -la $HOME
+          mkdir -p ~/.ssh || echo "mkdir failed"
+          echo "After mkdir:"
+          ls -la ~/.ssh || true
+          echo "$SSH_PRIVATE_KEY" | wc -l  # сколько строк в ключе
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts  # Добавьте хост в known_hosts
+      - name: Connect and deploy
+        run: |
+          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'cd ${{ env.DIR }} && git fetch --all && git reset --hard ${{ env.GIT_BRANCH }}'
+      - name: composer install
+        run: |
+          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} composer install --no-dev --optimize-autoloader'
+#      - name: go migrate
+#        run: |
+#          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate'
+
+#      - name: Deploy and update Laravel
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ env.VPS_HOST }}
+#          username: ${{ env.VPS_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          script: |
+#            cd ${{ env.DIR }}
+#            git fetch --all
+#            git reset --hard ${{ env.GIT_BRANCH }}
+#            git pull origin main
+#            docker exec ${{ env.DOCKER_CONTAINER }} composer install --no-dev --optimize-autoloader
+#            docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate
+#            docker exec ${{ env.DOCKER_CONTAINER }} npm install && npm run build
+#            if [ "${{ steps.check_commit.outputs.start_setup }}" == "true" ]; then
+#              docker exec ${{ env.DOCKER_CONTAINER }} chmod -R 775 /home/2503master/storage
+#              docker exec ${{ env.DOCKER_CONTAINER }} chown -R www-data:www-data /home/2503master/storage
+#              docker exec ${{ env.DOCKER_CONTAINER }} php artisan storage:link
+#            fi
+#            # Перезапуск контейнера (раскомментируйте, если нужно)
+#            # docker compose down
+#            # docker compose up -d --build
+
+  sms_start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram notification (start)
+        uses: appleboy/telegram-action@master
+        with:
+          to: 360209578, phpcat
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🐥🐥🐥 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} (${{ github.run_id }})
+            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
+
+  sms_end:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Send Telegram notification (end)
+        uses: appleboy/telegram-action@master
+        with:
+          to: 360209578, phpcat
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🍀🍀🍀 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} > ${{ github.run_id }}
+            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
+            Завершено успешно
+        if: success()
+
+      - name: Send Telegram notification (failure)
+        uses: appleboy/telegram-action@master
+        with:
+          to: 360209578, phpcat
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🚨🚨🚨 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} > ${{ github.run_id }}
+            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
+            Ошибка деплоя! Проверьте логи.
+        if: failure()

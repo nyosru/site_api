@@ -1,10 +1,22 @@
 <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0">Laravel Log</h2>
-        <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="resetFilters">
-            Сбросить фильтры
-        </button>
+        <div class="d-flex" style="gap: 8px;">
+            <button type="button" class="btn btn-sm btn-outline-danger" wire:click="clearLogs"
+                    wire:confirm="Очистить все логи?">
+                Очистить логи
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="resetFilters">
+                Сбросить фильтры
+            </button>
+        </div>
     </div>
+
+    @if($statusMessage !== '')
+        <div class="alert alert-info py-2">
+            {{ $statusMessage }}
+        </div>
+    @endif
 
     <div class="card mb-3">
         <div class="card-body">

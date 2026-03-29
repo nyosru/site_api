@@ -3,6 +3,7 @@
 namespace Tests\Feature\Web;
 
 use Illuminate\Support\Facades\File;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class LaravelLogPageTest extends TestCase
@@ -42,5 +43,24 @@ class LaravelLogPageTest extends TestCase
             ->assertSee('Bravo failure')
             ->assertDontSee('Alpha event')
             ->assertDontSee('Charlie event');
+    }
+
+    public function test_clear_logs_button_truncates_all_log_files(): void
+    {
+        $logsDir = storage_path('logs');
+        File::ensureDirectoryExists($logsDir);
+
+        $mainLog = $logsDir.'/laravel.log';
+        $workerLog = $logsDir.'/worker.log';
+
+        File::put($mainLog, "main line\n");
+        File::put($workerLog, "worker line\n");
+
+        Livewire::test(\App\Livewire\LaravelLogComponent::class)
+            ->call('clearLogs')
+            ->assertSet('statusMessage', 'Логи очищены.');
+
+        $this->assertSame('', File::get($mainLog));
+        $this->assertSame('', File::get($workerLog));
     }
 }

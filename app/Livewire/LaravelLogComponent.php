@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,6 +22,8 @@ class LaravelLogComponent extends Component
 
     #[Url(as: 'pp')]
     public int $perPage = 100;
+
+    public string $statusMessage = '';
 
     public function updatedSearch(): void
     {
@@ -40,6 +43,23 @@ class LaravelLogComponent extends Component
     {
         $this->search = '';
         $this->perPage = 100;
+        $this->resetPage();
+    }
+
+    public function clearLogs(): void
+    {
+        $files = File::glob(storage_path('logs/*.log')) ?: [];
+
+        foreach ($files as $file) {
+            if (is_file($file) && is_writable($file)) {
+                file_put_contents($file, '');
+            }
+        }
+
+        $this->statusMessage = $files === []
+            ? 'Лог-файлы не найдены.'
+            : 'Логи очищены.';
+
         $this->resetPage();
     }
 
