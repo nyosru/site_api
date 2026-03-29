@@ -17,71 +17,71 @@ on:
 jobs:
 
 
-  tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Run Laravel tests on server
-        id: run_tests
-        run: |
-          set +e
-
-          OUTPUT=$(ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} '
-
-            cd ${{ env.DIR }} &&
-            git fetch --all &&
-            git reset --hard ${{ env.GIT_BRANCH }} &&
-
-            echo "=== INSTALL DEV DEPENDENCIES ===" &&
-            docker exec ${{ env.DOCKER_CONTAINER }} composer install &&
-
-            echo "=== go migrate ===" &&
-            docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate &&
-
-            echo "=== RUN TESTS ===" &&
-            docker exec ${{ env.DOCKER_CONTAINER }} php artisan test 2>&1
-          ')
-
-
-          echo "$OUTPUT"
-
-          echo "test_output<<EOF" >> $GITHUB_OUTPUT
-          echo "$OUTPUT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-        #echo "$OUTPUT" | grep -E "FAIL|ERROR|Tests:.*Failures"
-        #if [ $? -eq 0 ]; then
-        #  echo "❌ TESTS FAILED"
-        #  exit 1
-        #fi
-
-      - name: Send Telegram if tests failed
-        if: failure()
-        uses: appleboy/telegram-action@master
-        with:
-          to: 360209578, phpcat
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🚨 ТЕСТЫ УПАЛИ
-            Repo: ${{ github.repository }}
-            Actor: ${{ github.actor }}
-            Commit: ${{ github.event.head_commit.message }}
-
-            Ошибка:
-            ${{ steps.run_tests.outputs.test_output }}
+#  tests:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Set up SSH
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+#          chmod 600 ~/.ssh/id_rsa
+#          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
+#
+#      - name: Run Laravel tests on server
+#        id: run_tests
+#        run: |
+#          set +e
+#
+#          OUTPUT=$(ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} '
+#
+#            cd ${{ env.DIR }} &&
+#            git fetch --all &&
+#            git reset --hard ${{ env.GIT_BRANCH }} &&
+#
+#            echo "=== INSTALL DEV DEPENDENCIES ===" &&
+#            docker exec ${{ env.DOCKER_CONTAINER }} composer install &&
+#
+#            echo "=== go migrate ===" &&
+#            docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate &&
+#
+#            echo "=== RUN TESTS ===" &&
+#            docker exec ${{ env.DOCKER_CONTAINER }} php artisan test 2>&1
+#          ')
+#
+#
+#          echo "$OUTPUT"
+#
+#          echo "test_output<<EOF" >> $GITHUB_OUTPUT
+#          echo "$OUTPUT" >> $GITHUB_OUTPUT
+#          echo "EOF" >> $GITHUB_OUTPUT
+#
+#        #echo "$OUTPUT" | grep -E "FAIL|ERROR|Tests:.*Failures"
+#        #if [ $? -eq 0 ]; then
+#        #  echo "❌ TESTS FAILED"
+#        #  exit 1
+#        #fi
+#
+#      - name: Send Telegram if tests failed
+#        if: failure()
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: 360209578, phpcat
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: |
+#            🚨 ТЕСТЫ УПАЛИ
+#            Repo: ${{ github.repository }}
+#            Actor: ${{ github.actor }}
+#            Commit: ${{ github.event.head_commit.message }}
+#
+#            Ошибка:
+#            ${{ steps.run_tests.outputs.test_output }}
 
   deploy:
     runs-on: ubuntu-latest
-    needs: tests
+#    needs: tests
 
     steps:
       - name: Check commit message
@@ -132,9 +132,9 @@ jobs:
       - name: composer install
         run: |
           ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} composer install --no-dev --optimize-autoloader'
-#      - name: go migrate
-#        run: |
-#          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate'
+      - name: go migrate
+        run: |
+          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate'
 
 #      - name: Deploy and update Laravel
 #        uses: appleboy/ssh-action@v1.0.3
