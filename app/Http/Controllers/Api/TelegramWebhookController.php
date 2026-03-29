@@ -29,7 +29,7 @@ final class TelegramWebhookController extends Controller
         $message = $payload['message'] ?? [];
         $from = $message['from'] ?? [];
         $text = (string) ($message['text'] ?? '');
-        $text = (string) serialize($payload);
+//        $text = (string) serialize($payload);
         $command = Str::startsWith($text, '/') ? strtok($text, ' ') : null;
 
         TelegramInMsg::query()->create([
