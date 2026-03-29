@@ -17,7 +17,7 @@ Route::any('/telegram/webhook', TelegramWebhookController::class);
 
 //$env = parse_ini_file('./../.env');
 $token = $array['token'] ?? $_GET['token'] ?? env('TELEGRAM_BOT_TOKEN') ?? '';
-dd($token);
+//dd($token);
 $bot = new \TelegramBot\Api\Client($token);
 
 $msg = __FILE__.' '.__LINE__;
