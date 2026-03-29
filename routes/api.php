@@ -12,6 +12,17 @@ Route::get('/whois', WhoisController::class);
 Route::any('/telegram', TelegramController::class);
 Route::any('/telegram/webhook', TelegramWebhookController::class);
 
+
+
+
+$env = parse_ini_file( $_SERVER['DOCUMENT_ROOT'] .'/.env');
+$token = $array['token'] ?? $_GET['token'] ?? $env['TELEGRAM_BOT_TOKEN'] ?? '';
+$bot = new \TelegramBot\Api\Client($token);
+
+$msg = __FILE__.' '.__LINE__;
+$to_id = 360209578;
+$res = $bot->sendMessage((int) $to_id, (string) $msg);
+
 $text = 'api';
 $v1 = file_get_contents("php://input");
 $array =
