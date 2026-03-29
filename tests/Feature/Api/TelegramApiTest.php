@@ -254,4 +254,30 @@ class TelegramApiTest extends TestCase
             'is_start' => 0,
         ]);
     }
+
+    public function test_telegram_api_stores_incoming_webhook_even_without_token(): void
+    {
+        $response = $this->postJson('/api/telegram', [
+            'answer' => 'json',
+            'update_id' => 999,
+            'message' => [
+                'text' => 'incoming without token',
+                'from' => [
+                    'id' => 112233,
+                    'username' => 'no_token_user',
+                ],
+            ],
+        ]);
+
+        $response->assertOk()->assertJson([
+            'res' => true,
+            'text' => 'message logged, bot token missing',
+        ]);
+
+        $this->assertDatabaseHas('telegram_in_msg', [
+            'telegram_user_id' => 112233,
+            'text' => 'incoming without token',
+            'username' => 'no_token_user',
+        ]);
+    }
 }

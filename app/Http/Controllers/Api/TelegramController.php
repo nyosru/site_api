@@ -143,15 +143,27 @@ final class TelegramController extends Controller
         date_default_timezone_set('Asia/Yekaterinburg');
 
         $payload = $request->json()->all();
+        if (empty($payload)) {
+            $rawPayload = json_decode((string) $request->getContent(), true);
+            if (is_array($rawPayload)) {
+                $payload = $rawPayload;
+            }
+        }
+
+        $isIncomingWebhook = !empty($payload['message']) || isset($payload['update_id']);
         $token = (string) ($payload['token'] ?? $request->query('token') ?? config('services.telegram.bot_token', ''));
         $answerJsonRequested = ($payload['answer'] ?? $request->query('answer')) === 'json';
 
-        if ($token === '') {
+        if ($isIncomingWebhook && !empty($payload['message'])) {
+            $this->storeIncomingMessage($payload, $token !== '' ? $token : null);
+        }
+
+        if ($token === '' && !$isIncomingWebhook) {
             return $this->response($answerJsonRequested, ['res' => false, 'text' => 'token is required'], 422);
         }
 
         try {
-            if (!$this->isWebhookRegistered()) {
+            if ($token !== '' && !$isIncomingWebhook && !$this->isWebhookRegistered()) {
                 $registered = $telegram->setWebhook($token, $request->getSchemeAndHttpHost().'/api/telegram');
 
                 if ($registered) {
@@ -242,8 +254,8 @@ final class TelegramController extends Controller
         $fromId = (int) ($from['id'] ?? 0);
         $username = (string) ($from['username'] ?? '');
 
-        if (!empty($payload['message'])) {
-            $this->storeIncomingMessage($payload, $token);
+        if ($token === '') {
+            return $this->response($answerJsonRequested, ['res' => true, 'text' => 'message logged, bot token missing']);
         }
 
         if ($incomingText === '/get_my_id' && $fromId > 0) {
@@ -302,7 +314,7 @@ final class TelegramController extends Controller
         return $this->response($answerJsonRequested, ['res' => false, 'text' => 'не сработала ни одна команда']);
     }
 
-    private function storeIncomingMessage(array $payload, string $token): void
+    private function storeIncomingMessage(array $payload, ?string $token): void
     {
         $message = $payload['message'] ?? [];
         $from = $message['from'] ?? [];
@@ -319,7 +331,7 @@ final class TelegramController extends Controller
             'text' => $text !== '' ? $text : null,
             'command' => $command ?: null,
             'is_start' => $command === '/start',
-            'bot_token_hash' => hash('sha256', $token),
+            'bot_token_hash' => $token !== null && $token !== '' ? hash('sha256', $token) : null,
             'payload' => $payload,
             'received_at' => now(),
         ]);
