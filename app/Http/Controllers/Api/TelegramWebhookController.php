@@ -13,13 +13,19 @@ final class TelegramWebhookController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $payload = $request->json()->all();
-        if (empty($payload)) {
-            $rawPayload = json_decode((string) $request->getContent(), true);
-            if (is_array($rawPayload)) {
-                $payload = $rawPayload;
-            }
-        }
+//        $payload = $request->json()->all();
+//        if (empty($payload)) {
+//            $rawPayload = json_decode((string) $request->getContent(), true);
+//            if (is_array($rawPayload)) {
+//                $payload = $rawPayload;
+//            }
+//        }
+
+        $v1 = file_get_contents("php://input");
+        $payload =
+        $array =
+        $v = json_decode($v1, true);
+
 
         $message = $payload['message'] ?? [];
         $from = $message['from'] ?? [];
