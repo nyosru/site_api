@@ -38,6 +38,465 @@
                 }
             }
         },
+        "/api/telegram": {
+            "get": {
+                "tags": [
+                    "Telegram"
+                ],
+                "summary": "Send Telegram message via signed query params",
+                "description": "Legacy-compatible endpoint. Use msg/domain/s parameters to send outgoing messages.",
+                "operationId": "apiTelegramGet",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "msg",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "s",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Telegram chat id, can be repeated as array id[]=1&id[]=2",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "answer",
+                        "in": "query",
+                        "description": "Set to json to force JSON response",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Command handled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "res": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation-like failure, for example missing token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "res": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "token is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Telegram"
+                ],
+                "summary": "Telegram webhook handler and sender",
+                "description": "Accepts webhook updates from Telegram and also supports outgoing message mode with legacy payload fields.",
+                "operationId": "apiTelegramPost",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "msg": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "domain": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "s": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "id": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "nullable": true
+                                    },
+                                    "answer": {
+                                        "type": "string",
+                                        "example": "json",
+                                        "nullable": true
+                                    },
+                                    "message": {
+                                        "properties": {
+                                            "text": {
+                                                "type": "string",
+                                                "example": "/start",
+                                                "nullable": true
+                                            },
+                                            "from": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 123456789
+                                                    },
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "username",
+                                                        "nullable": true
+                                                    },
+                                                    "first_name": {
+                                                        "type": "string",
+                                                        "example": "Ivan",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Webhook handled or message processed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "res": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing required token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "res": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "example": "token is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vk/send": {
+            "get": {
+                "tags": [
+                    "VK"
+                ],
+                "summary": "Отправить сообщение пользователю VK (через GET)",
+                "description": "То же, что и POST, но параметры передаются в query-строке.",
+                "operationId": "apiVkSendMessageGet",
+                "parameters": [
+                    {
+                        "name": "group_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "main_group"
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "vk1.a.xxxxx"
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "12345,67890"
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Привет из API"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Сообщение отправлено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "group": {
+                                            "type": "string",
+                                            "example": "main_group",
+                                            "nullable": true
+                                        },
+                                        "sent_user_ids": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VK"
+                ],
+                "summary": "Отправить сообщение пользователю VK от имени группы (через POST)",
+                "description": "Для авторизации передайте либо название группы, либо token. Подробности в описании.",
+                "operationId": "apiVkSendMessagePost",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message"
+                                ],
+                                "properties": {
+                                    "group_name": {
+                                        "type": "string",
+                                        "example": "main_group",
+                                        "nullable": true
+                                    },
+                                    "token": {
+                                        "type": "string",
+                                        "example": "vk1.a.xxxxx",
+                                        "nullable": true
+                                    },
+                                    "user_id": {
+                                        "description": "ID пользователя: число, массив ID или строка \"1,2,3\"",
+                                        "nullable": true,
+                                        "oneOf": [
+                                            {
+                                                "type": "integer",
+                                                "example": 12345
+                                            },
+                                            {
+                                                "type": "string",
+                                                "example": "12345,67890"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Привет из API"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Сообщение отправлено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "group": {
+                                            "type": "string",
+                                            "example": "main_group",
+                                            "nullable": true
+                                        },
+                                        "sent_user_ids": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации или доменная ошибка",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Token for group not found: main_group"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/whois": {
             "get": {
                 "tags": [
@@ -117,6 +576,14 @@
         {
             "name": "System",
             "description": "System"
+        },
+        {
+            "name": "Telegram",
+            "description": "Telegram"
+        },
+        {
+            "name": "VK",
+            "description": "VK"
         },
         {
             "name": "Whois",

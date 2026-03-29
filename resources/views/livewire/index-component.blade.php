@@ -97,8 +97,32 @@ const sendToTelegramm = async (msg) => {
             <h1>VK</h1>
 
             <div id="t1" style='margin-left: 20px; padding-left:20px;border-left: 3px solid rgba(0,255,0,0.2);'>
+                <h3>отправка сообщения подписанному от группы v2.0</h3>
 
-                <h3>отправка сообщения подписанному от группы</h3>
+                https://api.uralweb.info/api/vk/send
+                <br/>
+                <br/>
+<b>GET:</b>
+                <pre>
+<code>
+https://api.local/api/vk/send?group_name=--название группы--&user_id=--user_id--&message=сообщение
+</code>
+                            </pre>
+
+<b>POST:</b>
+                <pre>
+                    <code>
+{
+"group_name": "--название группы--",
+"user_id": --id_user|user_ids(x,x,x,x)--,
+"message": "Сообщение"
+}
+ </code>
+                            </pre>
+            </div>
+            <div id="t1" style='margin-left: 20px; padding-left:20px;border-left: 3px solid rgba(0,255,0,0.2);'>
+
+                <h3>отправка сообщения подписанному от группы v1.0</h3>
                 <pre>
 <code>
     file_get_contents('https://api.uralweb.info/vk.php?' . http_build_query(
@@ -111,6 +135,7 @@ const sendToTelegramm = async (msg) => {
     ));
 </code>
                             </pre>
+
 
             </div>
         </div>

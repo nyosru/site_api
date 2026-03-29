@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Application\Telegram\Services\TelegramBotService;
+use App\Application\Telegram\Services\VkBotService;
 use App\Models\TelegramInMsg;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -138,7 +138,7 @@ final class TelegramController extends Controller
             ),
         ]
     )]
-    public function __invoke(Request $request, TelegramBotService $telegram): JsonResponse|string
+    public function __invoke(Request $request, VkBotService $telegram): JsonResponse|string
     {
         date_default_timezone_set('Asia/Yekaterinburg');
 
@@ -200,12 +200,12 @@ final class TelegramController extends Controller
     }
 
     private function handleOutgoingMessage(
-        Request $request,
-        array $payload,
-        string $text,
-        TelegramBotService $telegram,
-        string $token,
-        bool $answerJsonRequested
+        Request      $request,
+        array        $payload,
+        string       $text,
+        VkBotService $telegram,
+        string       $token,
+        bool         $answerJsonRequested
     ): JsonResponse|string {
         $domainSource = (string) ($request->query('domain') ?? $payload['domain'] ?? '');
         $domain = str_contains($domainSource, 'xn--') && function_exists('idn_to_utf8')
@@ -244,10 +244,10 @@ final class TelegramController extends Controller
     }
 
     private function handleIncomingWebhook(
-        array $payload,
-        TelegramBotService $telegram,
-        string $token,
-        bool $answerJsonRequested
+        array        $payload,
+        VkBotService $telegram,
+        string       $token,
+        bool         $answerJsonRequested
     ): JsonResponse|string {
         $incomingText = (string) ($payload['message']['text'] ?? '');
         $from = $payload['message']['from'] ?? [];

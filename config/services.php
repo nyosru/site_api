@@ -39,4 +39,15 @@ return [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
     ],
 
+    'vk' => [
+        'bot_token' => env('VK_BOT_TOKEN'),
+        'api_version' => env('VK_API_VERSION', '5.199'),
+        'group_tokens' => (static function (): array {
+            $raw = env('VK_GROUP_TOKENS', '{}');
+            $decoded = json_decode($raw, true);
+
+            return is_array($decoded) ? $decoded : [];
+        })(),
+    ],
+
 ];

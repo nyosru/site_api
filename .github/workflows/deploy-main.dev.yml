@@ -84,6 +84,7 @@ jobs:
 #    needs: tests
 
     steps:
+
       - name: Check commit message
         id: check_commit
         run: |
@@ -135,6 +136,10 @@ jobs:
       - name: go migrate
         run: |
           ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} php artisan migrate'
+
+      - name: generate swagger
+        run: |
+          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} make swagger-generate'
 
 #      - name: Deploy and update Laravel
 #        uses: appleboy/ssh-action@v1.0.3

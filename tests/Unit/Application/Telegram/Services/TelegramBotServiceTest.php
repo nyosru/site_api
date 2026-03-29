@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application\Telegram\Services;
 
-use App\Application\Telegram\Services\TelegramBotService;
+use App\Application\Telegram\Services\VkBotService;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class TelegramBotServiceTest extends TestCase
             'https://api.telegram.org/bottest-token/sendMessage' => Http::response(['ok' => true], 200),
         ]);
 
-        $service = new TelegramBotService();
+        $service = new VkBotService();
         $service->sendMessage('test-token', 123456, 'hello');
 
         Http::assertSent(function ($request): bool {
@@ -30,7 +30,7 @@ class TelegramBotServiceTest extends TestCase
             'https://api.telegram.org/bottest-token/setWebhook' => Http::response(['ok' => true], 200),
         ]);
 
-        $service = new TelegramBotService();
+        $service = new VkBotService();
         $result = $service->setWebhook('test-token', 'https://example.test/api/telegram');
 
         $this->assertTrue($result);
