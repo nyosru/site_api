@@ -26,9 +26,9 @@ final class TelegramWebhookController extends Controller
         $array =
         $v = json_decode($v1, true);
 
-//        $message = $payload['message'] ?? [];
-//        $from = $message['from'] ?? [];
-//        $text = (string) ($message['text'] ?? '');
+        $message = $payload['message'] ?? [];
+        $from = $message['from'] ?? [];
+        $text = (string) ($message['text'] ?? '');
         $text = (string) serialize($payload);
         $command = Str::startsWith($text, '/') ? strtok($text, ' ') : null;
 
