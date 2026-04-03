@@ -139,7 +139,7 @@ jobs:
 
       - name: generate swagger
         run: |
-          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} make swagger-generate'
+          ssh ${{ env.VPS_USERNAME }}@${{ env.VPS_HOST }} 'docker exec ${{ env.DOCKER_CONTAINER }} php artisan l5-swagger:generate'
 
 #      - name: Deploy and update Laravel
 #        uses: appleboy/ssh-action@v1.0.3
@@ -167,37 +167,65 @@ jobs:
   sms_start:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Telegram notification (start)
-        uses: appleboy/telegram-action@master
-        with:
-          to: 360209578, phpcat
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🐥🐥🐥 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} (${{ github.run_id }})
-            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
-
+#      - name: Send Telegram notification (start)
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: 360209578, phpcat
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: |
+#            🐥🐥🐥 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} (${{ github.run_id }})
+#            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
+      - name: sms_vk_start
+        run: |
+          curl -X POST "https://api.php-cat.com/api/vk/send" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "group_name": "tech",
+              "user_id": 5903492,
+              "message": "🚀🚀🚀 ${{ github.repository }} Старт деплоя \n 💻 ${{ github.actor }} (${{ github.run_id }}) \n 📝 ${{ github.event.head_commit.message }} "
+            }'
   sms_end:
     runs-on: ubuntu-latest
     needs: deploy
+    if: always()
     steps:
-      - name: Send Telegram notification (end)
-        uses: appleboy/telegram-action@master
-        with:
-          to: 360209578, phpcat
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🍀🍀🍀 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} > ${{ github.run_id }}
-            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
-            Завершено успешно
+#      - name: Send Telegram notification (end)
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: 360209578, phpcat
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: |
+#            🍀🍀🍀 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} > ${{ github.run_id }}
+#            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
+#            Завершено успешно
+      - name: sms_vk
+        run: |
+          curl -X POST "https://api.php-cat.com/api/vk/send" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "group_name": "tech",
+              "user_id": 5903492,
+              "message": "🍀🍀🍀 ${{ github.repository }} Deployment finished \n ‍💻 ${{ github.ref_name }} ++ ${{ github.actor }} (${{ github.run_id }}) "
+            }'
         if: success()
 
-      - name: Send Telegram notification (failure)
-        uses: appleboy/telegram-action@master
-        with:
-          to: 360209578, phpcat
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🚨🚨🚨 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} > ${{ github.run_id }}
-            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
-            Ошибка деплоя! Проверьте логи.
+#      - name: Send Telegram notification (failure)
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: 360209578, phpcat
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: |
+#            🚨🚨🚨 ${{ github.repository }} 👨🏻‍💻 ${{ github.actor }} > ${{ github.run_id }}
+#            ${{ github.event_name }} > ${{ github.event.head_commit.message }}
+#            Ошибка деплоя! Проверьте логи.
+
+      - name: sms_vk
+        run: |
+          curl -X POST "https://api.php-cat.com/api/vk/send" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "group_name": "tech",
+              "user_id": 5903492,
+              "message": "🚨🚨 ${{ github.repository }} Ошибка деплоя! Проверьте логи. \n ‍💻 ${{ github.ref_name }} ++ ${{ github.actor }} (${{ github.run_id }}) "
+            }'
         if: failure()
