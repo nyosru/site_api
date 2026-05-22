@@ -24,16 +24,27 @@ final class VkWebhookController extends Controller
                 properties: [
                     new OA\Property(property: 'type', type: 'string', example: 'message_new'),
                     new OA\Property(property: 'group_id', type: 'integer', example: 236808681),
-                    new OA\Property(property: 'object', type: 'object', nullable: true),
-                    new OA\Property(property: 'secret', type: 'string', nullable: true),
+                    new OA\Property(property: 'secret', type: 'string', nullable: true, example: 'your_secret_key'),
+                    new OA\Property(
+                        property: 'object',
+                        type: 'object',
+                        nullable: true,
+                        example: ['message' => ['id' => 1, 'text' => 'test']]
+                    ),
                 ],
-                type: 'object'
+                type: 'object',
+                example: [
+                    'type' => 'message_new',
+                    'group_id' => 236808681,
+                    'secret' => 'your_secret_key',
+                    'object' => ['message' => ['id' => 1, 'text' => 'test']],
+                ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: 'ok',
+                description: 'OK. Для type=confirmation — строка с кодом подтверждения. Для остальных — "ok".',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: 'ok', type: 'boolean', example: true),
@@ -42,6 +53,28 @@ final class VkWebhookController extends Controller
                 )
             ),
         ]
+    )]
+    #[OA\Examples(
+        summary: 'Confirmation request',
+        description: 'VK отправляет этот запрос для подтверждения сервера. Ответом должна быть строка с confirmation code.',
+        value: ['type' => 'confirmation', 'group_id' => 236808681],
+    )]
+    #[OA\Examples(
+        summary: 'New message event',
+        description: 'Обычное входящее сообщение от пользователя VK.',
+        value: [
+            'type' => 'message_new',
+            'group_id' => 236808681,
+            'secret' => 'your_secret_key',
+            'object' => [
+                'message' => [
+                    'id' => 42,
+                    'date' => 1680000000,
+                    'text' => 'Привет!',
+                    'from_id' => 123456789,
+                ],
+            ],
+        ],
     )]
     public function __invoke(Request $request, VkIncomingMessageService $service, VkChannelRepository $channelRepo): string
     {
