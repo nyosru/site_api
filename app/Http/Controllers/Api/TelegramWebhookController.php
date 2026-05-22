@@ -41,10 +41,8 @@ final class TelegramWebhookController extends Controller
                                     new OA\Property(property: 'last_name', type: 'string', nullable: true, example: 'Ivanov'),
                                     new OA\Property(property: 'language_code', type: 'string', nullable: true, example: 'ru'),
                                 ],
-                                type: 'object'
                             ),
                         ],
-                        type: 'object'
                     ),
                 ],
                 type: 'object'
