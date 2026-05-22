@@ -14,6 +14,7 @@ class VkChannelComponent extends Component
     public string $tag = '';
     public string $groupId = '';
     public string $confirmationCode = '';
+    public string $secret = '';
     public bool $isActive = true;
 
     protected function rules(): array
@@ -23,6 +24,7 @@ class VkChannelComponent extends Component
             'tag' => ['required', 'string', 'max:255', 'unique:vk_channels,tag,' . ($this->editingId ?? 'NULL') . ',id'],
             'groupId' => ['required', 'integer', 'unique:vk_channels,group_id,' . ($this->editingId ?? 'NULL') . ',id'],
             'confirmationCode' => ['required', 'string', 'max:255'],
+            'secret' => ['nullable', 'string', 'max:255'],
             'isActive' => ['boolean'],
         ];
     }
@@ -47,6 +49,7 @@ class VkChannelComponent extends Component
         $this->tag = $channel->tag;
         $this->groupId = (string) $channel->group_id;
         $this->confirmationCode = $channel->confirmation_code;
+        $this->secret = $channel->secret ?? '';
         $this->isActive = $channel->is_active;
         $this->showForm = true;
     }
@@ -60,6 +63,7 @@ class VkChannelComponent extends Component
             'tag' => $this->tag,
             'group_id' => (int) $this->groupId,
             'confirmation_code' => $this->confirmationCode,
+            'secret' => $this->secret !== '' ? $this->secret : null,
             'is_active' => $this->isActive,
         ];
 
@@ -96,6 +100,7 @@ class VkChannelComponent extends Component
         $this->tag = '';
         $this->groupId = '';
         $this->confirmationCode = '';
+        $this->secret = '';
         $this->isActive = true;
         $this->resetValidation();
     }

@@ -13,6 +13,7 @@ class VkChannel extends Model
         'tag',
         'group_id',
         'confirmation_code',
+        'secret',
         'is_active',
     ];
 

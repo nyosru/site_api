@@ -32,12 +32,20 @@
                                    wire:model.blur="groupId">
                             @error('groupId') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="confirmationCode">Код подтверждения</label>
                             <input id="confirmationCode" type="text" class="form-control @error('confirmationCode') is-invalid @enderror"
                                    wire:model.blur="confirmationCode">
                             @error('confirmationCode') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
+                        <div class="form-group col-md-4">
+                            <label for="secret">Secret</label>
+                            <input id="secret" type="text" class="form-control @error('secret') is-invalid @enderror"
+                                   wire:model.blur="secret" placeholder="секретный ключ от VK">
+                            @error('secret') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="form-group col-md-2 d-flex align-items-end">
                             <div class="form-check">
                                 <input id="isActive" type="checkbox" class="form-check-input" wire:model="isActive">
@@ -64,6 +72,7 @@
                 <th>Group ID</th>
                 <th>Статус</th>
                 <th>Код подтверждения</th>
+                <th>Secret</th>
                 <th>Действия</th>
             </tr>
             </thead>
@@ -82,6 +91,7 @@
                         @endif
                     </td>
                     <td><code>{{ $channel->confirmation_code }}</code></td>
+                    <td><code>{{ $channel->secret ?? '-' }}</code></td>
                     <td>
                         <button type="button" class="btn btn-sm btn-outline-primary" wire:click="edit({{ $channel->id }})">
                             Ред.
@@ -99,7 +109,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted">Нет каналов. Добавьте первый.</td>
+                    <td colspan="8" class="text-center text-muted">Нет каналов. Добавьте первый.</td>
                 </tr>
             @endforelse
             </tbody>

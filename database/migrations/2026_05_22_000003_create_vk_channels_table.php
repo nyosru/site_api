@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('tag')->unique();
             $table->unsignedBigInteger('group_id')->unique();
             $table->string('confirmation_code');
+            $table->string('secret')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

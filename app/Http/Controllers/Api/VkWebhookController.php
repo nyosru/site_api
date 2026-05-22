@@ -54,13 +54,19 @@ final class VkWebhookController extends Controller
         }
 
         $groupId = isset($payload['group_id']) ? (int) $payload['group_id'] : null;
+        $channel = $groupId !== null ? $channelRepo->findByGroupId($groupId) : null;
+
+        if ($channel !== null && $channel->secret !== null) {
+            $incomingSecret = (string) ($payload['secret'] ?? '');
+            if ($incomingSecret !== $channel->secret) {
+                return response()->json(['error' => 'invalid secret'], 403);
+            }
+        }
 
         if (($payload['type'] ?? null) === 'confirmation' && $groupId !== null) {
-            $channel = $channelRepo->findByGroupId($groupId);
             return $channel?->confirmation_code ?? config('services.vk.confirmation_code', '');
         }
 
-        $channel = $groupId !== null ? $channelRepo->findByGroupId($groupId) : null;
         $tag = $channel?->tag;
 
         $service->store($payload, $tag);

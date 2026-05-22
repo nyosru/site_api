@@ -70,6 +70,7 @@ API-сервис для интеграции с VK, Telegram и WHOIS. Прин�
 | tag | varchar | unique — тег/идентификатор канала |
 | group_id | bigint | unique — ID группы VK |
 | confirmation_code | varchar | строка для подтверждения сервера |
+| secret | varchar | nullable — секретный ключ VK, проверяется при входящем callback |
 | is_active | boolean | default true — вкл/выкл приём |
 | created_at/updated_at | timestamp | |
 

@@ -15,5 +15,6 @@ Route::get('/whois', WhoisController::class);
 Route::any('/telegram', TelegramController::class);
 Route::any('/telegram/webhook', TelegramWebhookController::class);
 Route::any('/vk/send', VkSendMessageController::class);
+
 Route::post('/vk/webhook', VkWebhookController::class);
 Route::get('/vk/incoming', VkIncomingController::class);

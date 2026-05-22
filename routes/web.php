@@ -10,8 +10,10 @@ use App\Livewire\VkIncomingLogComponent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', IndexComponent::class)->name('index');
+
 Route::get('/telegram/log', TelegramLogComponent::class)->name('telegram.log');
 Route::get('/laravel/log', LaravelLogComponent::class)->name('laravel.log');
+
 Route::get('/vk/incoming/log', VkIncomingLogComponent::class);
 Route::get('/vk/channels', VkChannelComponent::class);
 
