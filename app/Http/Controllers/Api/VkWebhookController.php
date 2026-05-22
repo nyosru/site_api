@@ -57,8 +57,7 @@ final class VkWebhookController extends Controller
 
         if (($payload['type'] ?? null) === 'confirmation' && $groupId !== null) {
             $channel = $channelRepo->findByGroupId($groupId);
-            $code = $channel?->confirmation_code ?? config('services.vk.confirmation_code', '');
-            return response($code, 200)->header('Content-Type', 'text/plain');
+            return $channel?->confirmation_code ?? config('services.vk.confirmation_code', '');
         }
 
         $channel = $groupId !== null ? $channelRepo->findByGroupId($groupId) : null;
