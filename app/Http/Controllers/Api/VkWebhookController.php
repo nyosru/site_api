@@ -55,11 +55,13 @@ final class VkWebhookController extends Controller
         ]
     )]
     #[OA\Examples(
+        example: 'confirmation',
         summary: 'Confirmation request',
         description: 'VK отправляет этот запрос для подтверждения сервера. Ответом должна быть строка с confirmation code.',
         value: ['type' => 'confirmation', 'group_id' => 236808681],
     )]
     #[OA\Examples(
+        example: 'message_new',
         summary: 'New message event',
         description: 'Обычное входящее сообщение от пользователя VK.',
         value: [
