@@ -8,9 +8,61 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use OpenApi\Attributes as OA;
 
 final class TelegramWebhookController extends Controller
 {
+    #[OA\Post(
+        path: '/api/telegram/webhook',
+        operationId: 'apiTelegramWebhookPost',
+        summary: 'Receive Telegram webhook update',
+        description: 'Dedicated endpoint for Telegram webhook updates. Reads raw JSON, extracts message data, stores in telegram_in_msg.',
+        tags: ['Telegram'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'update_id', type: 'integer', example: 123456789),
+                    new OA\Property(
+                        property: 'message',
+                        type: 'object',
+                        nullable: true,
+                        properties: [
+                            new OA\Property(property: 'message_id', type: 'integer', example: 1),
+                            new OA\Property(property: 'text', type: 'string', nullable: true, example: '/start'),
+                            new OA\Property(
+                                property: 'from',
+                                type: 'object',
+                                nullable: true,
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 123456789),
+                                    new OA\Property(property: 'username', type: 'string', nullable: true, example: 'username'),
+                                    new OA\Property(property: 'first_name', type: 'string', nullable: true, example: 'Ivan'),
+                                    new OA\Property(property: 'last_name', type: 'string', nullable: true, example: 'Ivanov'),
+                                    new OA\Property(property: 'language_code', type: 'string', nullable: true, example: 'ru'),
+                                ],
+                                type: 'object'
+                            ),
+                        ],
+                        type: 'object'
+                    ),
+                ],
+                type: 'object'
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Webhook processed',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'res', type: 'boolean', example: true),
+                    ],
+                    type: 'object'
+                )
+            ),
+        ]
+    )]
     public function __invoke(Request $request): JsonResponse
     {
 //        $payload = $request->json()->all();

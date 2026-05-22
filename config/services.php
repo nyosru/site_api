@@ -42,6 +42,7 @@ return [
     'vk' => [
         'bot_token' => env('VK_BOT_TOKEN'),
         'api_version' => env('VK_API_VERSION', '5.199'),
+        'confirmation_code' => env('VK_CONFIRMATION_CODE', ''),
         'group_tokens' => (static function (): array {
             $raw = env('VK_GROUP_TOKENS', '{}');
             $decoded = json_decode($raw, true);

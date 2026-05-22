@@ -102,14 +102,14 @@ const sendToTelegramm = async (msg) => {
                 https://api.uralweb.info/api/vk/send
                 <br/>
                 <br/>
-<b>GET:</b>
+                <b>GET:</b>
                 <pre>
 <code>
 https://api.local/api/vk/send?group_name=--название группы--&user_id=--user_id--&message=сообщение
 </code>
                             </pre>
 
-<b>POST:</b>
+                <b>POST:</b>
                 <pre>
                     <code>
 {
