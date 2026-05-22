@@ -267,3 +267,119 @@ VK Callback API  ──POST──►  /api/vk/webhook  ──►  vk_incoming_me
                                                           ▼
                                           возврат записей + is_delivered = true
 ```
+
+---
+
+## Инструкция для сервиса-получателя
+
+Сервис-получатель забирает входящие запросы от VK через эндпоинт `/api/vk/incoming` и после получения они автоматически помечаются как доставленные.
+
+### 1. Получить все неотданные запросы
+
+```
+GET https://api.php-cat.com/api/vk/incoming
+```
+
+**Ответ:**
+```json
+[
+  {
+    "id": 1,
+    "channel": "my_channel",
+    "payload": {
+      "type": "message_new",
+      "group_id": 236808681,
+      "object": { "message": { "text": "Привет!" } }
+    },
+    "validation": {
+      "channel_found": true,
+      "channel_tag": "my_channel",
+      "channel_name": "My Channel",
+      "secret_expected": true,
+      "secret_valid": true
+    },
+    "received_at": "2026-05-22T12:00:00+0000"
+  }
+]
+```
+
+После возврата ответа все записи в массиве сразу помечаются `is_delivered = true`. Повторно они уже не придут.
+
+### 2. Фильтрация по каналу
+
+Если нужно получить сообщения только для конкретного канала:
+
+```
+GET https://api.php-cat.com/api/vk/incoming?channel=my_channel
+```
+
+### 3. Поля ответа
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `id` | int | ID записи |
+| `channel` | string/null | Тег канала (из `vk_channels.tag`) |
+| `payload` | object | Полный входящий callback от VK |
+| `validation` | object/null | Результаты проверки (`channel_found`, `channel_tag`, `channel_name`, `secret_expected`, `secret_valid`) |
+| `received_at` | string | Дата и время получения (ISO 8601) |
+
+### 4. Пример реализации на PHP
+
+```php
+$response = file_get_contents('https://api.php-cat.com/api/vk/incoming');
+$messages = json_decode($response, true);
+
+foreach ($messages as $message) {
+    $type = $message['payload']['type'] ?? '';
+    $groupId = $message['payload']['group_id'] ?? '';
+    $text = $message['payload']['object']['message']['text'] ?? '';
+
+    // обработка сообщения
+    echo "Тип: $type, группа: $groupId, текст: $text";
+
+    // запись уже помечена как доставленная автоматически
+}
+```
+
+### 5. Пример реализации на JS (fetch)
+
+```javascript
+fetch('https://api.php-cat.com/api/vk/incoming')
+  .then(res => res.json())
+  .then(messages => {
+    messages.forEach(msg => {
+      console.log('type:', msg.payload.type);
+      console.log('group_id:', msg.payload.group_id);
+      console.log('text:', msg.payload.object?.message?.text);
+      console.log('channel:', msg.channel);
+      console.log('validation:', msg.validation);
+
+      // запись уже помечена как доставленная автоматически
+    });
+  });
+```
+
+### 6. Пример на Python
+
+```python
+import requests
+
+response = requests.get('https://api.php-cat.com/api/vk/incoming')
+messages = response.json()
+
+for msg in messages:
+    payload = msg['payload']
+    print(f"type: {payload.get('type')}")
+    print(f"group_id: {payload.get('group_id')}")
+    print(f"text: {payload.get('object', {}).get('message', {}).get('text')}")
+    print(f"channel: {msg.get('channel')}")
+    print(f"validation: {msg.get('validation')}")
+    # запись уже помечена как доставленная автоматически
+```
+
+### 7. Важно
+
+- После GET-запроса записи сразу помечаются доставленными, повторного получения не будет.
+- Если нужно получить сообщения повторно, используйте параметр `?channel=...` для фильтрации необработанных каналов.
+- Эндпоинт возвращает пустой массив `[]`, если новых сообщений нет.
+- Для проверки статуса записи используйте веб-интерфейс `/vk/incoming/log`.
