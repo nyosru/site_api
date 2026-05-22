@@ -8,11 +8,12 @@ final readonly class VkIncomingMessageDto
         public int $id,
         public ?string $channel,
         public array $payload,
+        public ?array $validation,
         public string $receivedAt,
     ) {}
 
     /**
-     * @return array{id: int, channel: string|null, payload: array, received_at: string}
+     * @return array{id: int, channel: string|null, payload: array, validation: array|null, received_at: string}
      */
     public function toArray(): array
     {
@@ -20,6 +21,7 @@ final readonly class VkIncomingMessageDto
             'id' => $this->id,
             'channel' => $this->channel,
             'payload' => $this->payload,
+            'validation' => $this->validation,
             'received_at' => $this->receivedAt,
         ];
     }

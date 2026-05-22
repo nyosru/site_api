@@ -7,11 +7,12 @@ use Illuminate\Support\Collection;
 
 final class VkIncomingMessageRepository
 {
-    public function create(array $payload, ?string $channel = null): VkIncomingMessage
+    public function create(array $payload, ?string $channel = null, ?array $validation = null): VkIncomingMessage
     {
         return VkIncomingMessage::query()->create([
             'channel' => $channel,
             'payload' => $payload,
+            'validation' => $validation,
             'is_delivered' => false,
             'received_at' => now(),
         ]);

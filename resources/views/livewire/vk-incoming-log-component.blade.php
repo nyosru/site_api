@@ -64,6 +64,7 @@
                 <th>Доставлен</th>
                 <th>Payload (type)</th>
                 <th>Payload (group_id)</th>
+                <th>Валидация</th>
             </tr>
             </thead>
             <tbody>
@@ -82,10 +83,28 @@
                     <td>{{ optional($row->delivered_at)->format('Y-m-d H:i:s') ?? '-' }}</td>
                     <td>{{ $row->payload['type'] ?? '-' }}</td>
                     <td>{{ $row->payload['group_id'] ?? '-' }}</td>
+                    <td>
+                        @if($row->validation)
+                            @if($row->validation['channel_found'])
+                                <span class="badge badge-success">канал: {{ $row->validation['channel_tag'] }}</span>
+                            @else
+                                <span class="badge badge-secondary">канал не найден</span>
+                            @endif
+                            @if($row->validation['secret_expected'])
+                                @if($row->validation['secret_valid'])
+                                    <span class="badge badge-success">secret ok</span>
+                                @else
+                                    <span class="badge badge-danger">secret ошибка</span>
+                                @endif
+                            @endif
+                        @else
+                            <span class="text-muted">—</span>
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted">Нет записей по текущему фильтру</td>
+                    <td colspan="8" class="text-center text-muted">Нет записей по текущему фильтру</td>
                 </tr>
             @endforelse
             </tbody>
