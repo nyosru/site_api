@@ -60,6 +60,19 @@ API-сервис для интеграции с VK, Telegram и WHOIS. Прин�
 | payed_date | date | nullable |
 | created_at/updated_at | timestamp | |
 
+### `vk_channels`
+Каналы VK — привязка group_id к тегу и коду подтверждения.
+
+| Колонка | Тип | Примечание |
+|---|---|---|
+| id | bigint | PK |
+| name | varchar | название канала |
+| tag | varchar | unique — тег/идентификатор канала |
+| group_id | bigint | unique — ID группы VK |
+| confirmation_code | varchar | строка для подтверждения сервера |
+| is_active | boolean | default true — вкл/выкл приём |
+| created_at/updated_at | timestamp | |
+
 ### `vk_incoming_messages`
 Входящие callback-запросы от VK API с отметкой о доставке.
 
@@ -162,20 +175,17 @@ ANY /api/vk/send
 ### VK — Приём callback (вебхук)
 
 ```
-POST /api/vk/webhook?channel=my_channel
+POST /api/vk/webhook
 ```
 Принимает callback от VK Callback API.  
-Если `type: "confirmation"` — отвечает confirmation code (plain text).  
-Остальные события сохраняет в `vk_incoming_messages` с `is_delivered = false`.
-
-**Параметры:**
-- `channel` (query, опционально) — привязывает запись к каналу
+Если `type: "confirmation"` — ищет канал по `group_id` в таблице `vk_channels` и возвращает его confirmation code (plain text).  
+Остальные события сохраняет в `vk_incoming_messages` с `is_delivered = false`. Канал (тег) определяется автоматически по `group_id` из `vk_channels`.
 
 **Тело запроса:**
 ```json
 {
   "type": "message_new",
-  "group_id": 123456,
+  "group_id": 236808681,
   "object": { ... },
   "secret": "..."
 }
@@ -208,6 +218,15 @@ GET /api/vk/incoming?channel=my_channel
 ```
 
 ---
+
+### VK — Управление каналами (веб-интерфейс)
+
+```
+GET /vk/channels
+```
+Страница управления каналами VK. Добавление/редактирование/удаление каналов.  
+Каждый канал содержит: название, тег, group_id, код подтверждения, активность.  
+Тег канала автоматически подставляется в `vk_incoming_messages.channel` при приёме вебхука.
 
 ### VK — Лог входящих сообщений (веб-интерфейс)
 

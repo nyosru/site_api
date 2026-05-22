@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Application\Vk\Repositories\VkChannelRepository;
 use App\Application\Vk\Services\VkIncomingMessageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,17 +16,14 @@ final class VkWebhookController extends Controller
         path: '/api/vk/webhook',
         operationId: 'apiVkWebhook',
         summary: 'Принять входящий callback от VK API',
-        description: 'Сохраняет входящий JSON-запрос от VK с пометкой "не доставлено". Для confirmation type возвращает confirmation code.',
+        description: 'Сохраняет входящий JSON-запрос от VK с пометкой "не доставлено". Для confirmation type возвращает confirmation code из БД по group_id.',
         tags: ['VK'],
-        parameters: [
-            new OA\Parameter(name: 'channel', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'my_channel'),
-        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'type', type: 'string', example: 'message_new'),
-                    new OA\Property(property: 'group_id', type: 'integer', example: 123456),
+                    new OA\Property(property: 'group_id', type: 'integer', example: 236808681),
                     new OA\Property(property: 'object', type: 'object', nullable: true),
                     new OA\Property(property: 'secret', type: 'string', nullable: true),
                 ],
@@ -45,7 +43,7 @@ final class VkWebhookController extends Controller
             ),
         ]
     )]
-    public function __invoke(Request $request, VkIncomingMessageService $service): JsonResponse|string
+    public function __invoke(Request $request, VkIncomingMessageService $service, VkChannelRepository $channelRepo): JsonResponse|string
     {
         $payload = $request->json()->all();
         if (empty($payload)) {
@@ -55,14 +53,18 @@ final class VkWebhookController extends Controller
             }
         }
 
-        if (($payload['type'] ?? null) === 'confirmation') {
-            $code = config('services.vk.confirmation_code', '');
+        $groupId = isset($payload['group_id']) ? (int) $payload['group_id'] : null;
+
+        if (($payload['type'] ?? null) === 'confirmation' && $groupId !== null) {
+            $channel = $channelRepo->findByGroupId($groupId);
+            $code = $channel?->confirmation_code ?? config('services.vk.confirmation_code', '');
             return response($code, 200)->header('Content-Type', 'text/plain');
         }
 
-        $channel = $request->input('channel');
+        $channel = $groupId !== null ? $channelRepo->findByGroupId($groupId) : null;
+        $tag = $channel?->tag;
 
-        $service->store($payload, $channel);
+        $service->store($payload, $tag);
 
         return response()->json(['ok' => true]);
     }
