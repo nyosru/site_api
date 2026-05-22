@@ -123,6 +123,13 @@ return [
             'handler' => NullHandler::class,
         ],
 
+        'vk' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/vk-webhook.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ],
+
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],

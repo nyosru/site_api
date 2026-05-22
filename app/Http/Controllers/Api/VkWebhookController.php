@@ -7,6 +7,7 @@ use App\Application\Vk\Services\VkIncomingMessageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'VK', description: 'VK API integration')]
@@ -52,6 +53,8 @@ final class VkWebhookController extends Controller
                 $payload = $rawPayload;
             }
         }
+
+        Log::channel('vk')->info('vk webhook received', ['payload' => $payload]);
 
         $groupId = isset($payload['group_id']) ? (int) $payload['group_id'] : null;
         $channel = $groupId !== null ? $channelRepo->findByGroupId($groupId) : null;
