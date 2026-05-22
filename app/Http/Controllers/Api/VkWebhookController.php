@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Application\Vk\Repositories\VkChannelRepository;
 use App\Application\Vk\Services\VkIncomingMessageService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +43,7 @@ final class VkWebhookController extends Controller
             ),
         ]
     )]
-    public function __invoke(Request $request, VkIncomingMessageService $service, VkChannelRepository $channelRepo): JsonResponse|string
+    public function __invoke(Request $request, VkIncomingMessageService $service, VkChannelRepository $channelRepo): string
     {
         $payload = $request->json()->all();
         if (empty($payload)) {
@@ -75,16 +74,11 @@ final class VkWebhookController extends Controller
         }
 
         if (($payload['type'] ?? null) === 'confirmation' && $groupId !== null) {
-            $code = $channel?->confirmation_code ?? config('services.vk.confirmation_code', '');
-            return response($code, 200)->header('Content-Type', 'text/plain');
+            return $channel?->confirmation_code ?? config('services.vk.confirmation_code', '');
         }
 
         $service->store($payload, $channel?->tag, $validation);
 
-        if ($validation['secret_expected'] && !$validation['secret_valid']) {
-            return response()->json(['error' => 'invalid secret'], 403);
-        }
-
-        return response()->json(['ok' => true]);
+        return 'ok';
     }
 }
