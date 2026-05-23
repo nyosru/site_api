@@ -54,6 +54,15 @@ class VkIncomingLogComponent extends Component
         $this->autoRefresh = !$this->autoRefresh;
     }
 
+    public function toggleDelivered(int $id): void
+    {
+        $message = VkIncomingMessage::query()->findOrFail($id);
+        $message->update([
+            'is_delivered' => !$message->is_delivered,
+            'delivered_at' => $message->is_delivered ? null : now(),
+        ]);
+    }
+
     public function resetFilters(): void
     {
         $this->channel = '';

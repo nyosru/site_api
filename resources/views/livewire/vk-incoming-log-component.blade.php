@@ -74,11 +74,13 @@
                     <td>{{ optional($row->received_at)->format('Y-m-d H:i:s') ?? '-' }}</td>
                     <td>{{ $row->channel ?? '-' }}</td>
                     <td>
-                        @if($row->is_delivered)
-                            <span class="badge badge-success">доставлено</span>
-                        @else
-                            <span class="badge badge-warning">не доставлено</span>
-                        @endif
+                        <span style="cursor:pointer" wire:click="toggleDelivered({{ $row->id }})">
+                            @if($row->is_delivered)
+                                <span class="badge badge-success">доставлено</span>
+                            @else
+                                <span class="badge badge-warning">не доставлено</span>
+                            @endif
+                        </span>
                     </td>
                     <td>{{ optional($row->delivered_at)->format('Y-m-d H:i:s') ?? '-' }}</td>
                     <td>{{ $row->payload['type'] ?? '-' }}</td>
