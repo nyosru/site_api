@@ -6,6 +6,7 @@ use App\Livewire\IndexComponent;
 use App\Livewire\LaravelLogComponent;
 use App\Livewire\TelegramLogComponent;
 use App\Livewire\VkChannelComponent;
+use App\Livewire\VkGroupComponent;
 use App\Livewire\VkIncomingLogComponent;
 use App\Livewire\VkWebhookLogComponent;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ Route::get('/telegram/log', TelegramLogComponent::class)->name('telegram.log');
 Route::get('/laravel/log', LaravelLogComponent::class)->name('laravel.log');
 
 Route::get('/vk/incoming/log', VkIncomingLogComponent::class);
+Route::get('/vk/groups', VkGroupComponent::class);
 Route::get('/vk/channels', VkChannelComponent::class);
 Route::get('/vk/webhook/log', VkWebhookLogComponent::class);
 

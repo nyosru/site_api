@@ -147,6 +147,7 @@ https://api.local/api/vk/send?group_name=--название группы--&user_
             <ul>
                 <li><a href="/vk/incoming/log">VK Incoming Messages</a></li>
                 <li><a href="/vk/webhook/log">VK Webhook Log</a></li>
+                <li><a href="/vk/groups">VK Groups (для отправки)</a></li>
                 <li><a href="/vk/channels">VK Channels</a></li>
                 <li><a href="/telegram/log">Telegram Log</a></li>
                 <li><a href="/laravel/log">Laravel Log</a></li>

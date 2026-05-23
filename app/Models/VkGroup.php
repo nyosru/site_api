@@ -13,6 +13,7 @@ class VkGroup extends Model
         'token',
         'payed',
         'payed_date',
+        'comment',
     ];
 
     protected $casts = [
