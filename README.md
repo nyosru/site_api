@@ -313,7 +313,17 @@ GET https://api.php-cat.com/api/vk/incoming
 GET https://api.php-cat.com/api/vk/incoming?channel=my_channel
 ```
 
-### 3. Поля ответа
+### 3. Просмотр без отметки о доставке (preview)
+
+Если нужно посмотреть неотданные сообщения, но не помечать их как доставленные:
+
+```
+GET https://api.php-cat.com/api/vk/incoming?preview=true
+```
+
+Полезно для мониторинга или отладки — записи останутся со статусом `is_delivered = false` и вернутся при следующем запросе без `preview`.
+
+### 4. Поля ответа
 
 | Поле | Тип | Описание |
 |---|---|---|
@@ -323,7 +333,7 @@ GET https://api.php-cat.com/api/vk/incoming?channel=my_channel
 | `validation` | object/null | Результаты проверки (`channel_found`, `channel_tag`, `channel_name`, `secret_expected`, `secret_valid`) |
 | `received_at` | string | Дата и время получения (ISO 8601) |
 
-### 4. Пример реализации на PHP
+### 5. Пример реализации на PHP
 
 ```php
 $response = file_get_contents('https://api.php-cat.com/api/vk/incoming');
@@ -341,7 +351,7 @@ foreach ($messages as $message) {
 }
 ```
 
-### 5. Пример реализации на JS (fetch)
+### 6. Пример реализации на JS (fetch)
 
 ```javascript
 fetch('https://api.php-cat.com/api/vk/incoming')
@@ -359,7 +369,7 @@ fetch('https://api.php-cat.com/api/vk/incoming')
   });
 ```
 
-### 6. Пример на Python
+### 7. Пример на Python
 
 ```python
 import requests
@@ -377,7 +387,7 @@ for msg in messages:
     # запись уже помечена как доставленная автоматически
 ```
 
-### 7. Важно
+### 8. Важно
 
 - После GET-запроса записи сразу помечаются доставленными, повторного получения не будет.
 - Если нужно получить сообщения повторно, используйте параметр `?channel=...` для фильтрации необработанных каналов.

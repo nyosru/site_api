@@ -27,7 +27,7 @@ final class VkIncomingMessageService
     /**
      * @return array<int, array{id: int, channel: string|null, payload: array, validation: array|null, received_at: string}>
      */
-    public function consumeUndelivered(?string $channel = null): array
+    public function consumeUndelivered(?string $channel = null, bool $preview = false): array
     {
         $messages = $this->repository->getUndelivered($channel);
 
@@ -42,9 +42,11 @@ final class VkIncomingMessageService
             ];
         }
 
-        $ids = array_column($result, 'id');
-        foreach ($ids as $id) {
-            $this->repository->markAsDelivered($id);
+        if (!$preview) {
+            $ids = array_column($result, 'id');
+            foreach ($ids as $id) {
+                $this->repository->markAsDelivered($id);
+            }
         }
 
         return $result;

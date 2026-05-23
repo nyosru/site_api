@@ -18,6 +18,7 @@ final class VkIncomingController extends Controller
         tags: ['VK'],
         parameters: [
             new OA\Parameter(name: 'channel', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'my_channel'),
+            new OA\Parameter(name: 'preview', in: 'query', required: false, schema: new OA\Schema(type: 'boolean'), description: 'Если true — вернуть сообщения без отметки о доставке'),
         ],
         responses: [
             new OA\Response(
@@ -41,8 +42,9 @@ final class VkIncomingController extends Controller
     public function __invoke(Request $request, VkIncomingMessageService $service): JsonResponse
     {
         $channel = $request->query('channel');
+        $preview = $request->boolean('preview');
 
-        $messages = $service->consumeUndelivered($channel);
+        $messages = $service->consumeUndelivered($channel, $preview);
 
         return response()->json($messages);
     }
