@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('vk_channels', function (Blueprint $table): void {
-            $table->string('secret')->nullable();
-        });
+//        Schema::table('vk_channels', function (Blueprint $table): void {
+//            $table->string('secret')->nullable();
+//        });
     }
 
     public function down(): void
     {
-        Schema::table('vk_channels', function (Blueprint $table): void {
-            $table->dropColumn('secret');
-        });
+//        Schema::table('vk_channels', function (Blueprint $table): void {
+//            $table->dropColumn('secret');
+//        });
     }
 };

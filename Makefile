@@ -14,3 +14,5 @@ swagger-generate:
 	php artisan l5-swagger:generate
 
 
+bash:
+	docker exec -it site_api bash

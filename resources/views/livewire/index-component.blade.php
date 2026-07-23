@@ -1,5 +1,20 @@
 <div class="container">
 
+    @if(request()->has('showadmin'))
+    <div class="row mt-4">
+        <div class="col-sm-12">
+            <h2>Страницы управления</h2>
+            <ul>
+                <li><a href="/vk/incoming/log">VK Incoming Messages</a></li>
+                <li><a href="/vk/webhook/log">VK Webhook Log</a></li>
+                <li><a href="/vk/groups">VK Groups (для отправки)</a></li>
+                <li><a href="/vk/channels">VK Channels</a></li>
+                <li><a href="/telegram/log">Telegram Log</a></li>
+                <li><a href="/laravel/log">Laravel Log</a></li>
+            </ul>
+        </div>
+    </div>
+    @endif
 
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-12">
@@ -138,20 +153,6 @@ https://api.local/api/vk/send?group_name=--название группы--&user_
 
 
             </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-sm-12">
-            <h2>Страницы управления</h2>
-            <ul>
-                <li><a href="/vk/incoming/log">VK Incoming Messages</a></li>
-                <li><a href="/vk/webhook/log">VK Webhook Log</a></li>
-                <li><a href="/vk/groups">VK Groups (для отправки)</a></li>
-                <li><a href="/vk/channels">VK Channels</a></li>
-                <li><a href="/telegram/log">Telegram Log</a></li>
-                <li><a href="/laravel/log">Laravel Log</a></li>
-            </ul>
         </div>
     </div>
 </div>
