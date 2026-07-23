@@ -27,6 +27,8 @@
 
 <body>
 
+@if(!request()->has('showadmin'))
+
 <header>
 
     <section class="jumbotron text-center">
@@ -42,10 +44,16 @@
     </section>
 
 </header>
+
+@endif
+
 <main role="main">
 
-
     <div class="container">
+        @if(request()->has('showadmin'))
+            @livewire('admin-menu')
+        @endif
+
         {{ $slot }}
     </div>
 
