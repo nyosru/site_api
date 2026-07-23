@@ -83,7 +83,14 @@
                         </span>
                     </td>
                     <td>{{ optional($row->delivered_at)->format('Y-m-d H:i:s') ?? '-' }}</td>
-                    <td>{{ $row->payload['type'] ?? '-' }}</td>
+                    <td>
+                        {{ $row->payload['type'] ?? '-' }}
+                        @if( !empty($row->payload['text'] ) )<br/>
+                    <small>
+                            {{ nl2br($row->payload['text'] ?? '-') }}
+                    </small>
+                        @endif
+                    </td>
                     <td>{{ $row->payload['group_id'] ?? '-' }}</td>
                     <td>
                         @if($row->validation)
