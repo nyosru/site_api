@@ -70,7 +70,7 @@
             <tbody>
             @forelse($rows as $row)
                 <tr>
-                    <td>{{ $row->id }}</td>
+                    <td rowspan="2">{{ $row->id }}</td>
                     <td>{{ optional($row->received_at)->format('Y-m-d H:i:s') ?? '-' }}</td>
                     <td>{{ $row->channel ?? '-' }}</td>
                     <td>
@@ -110,6 +110,9 @@
                             <span class="text-muted">—</span>
                         @endif
                     </td>
+                </tr>
+                <tr>
+                    <td colspan="10" ><pre>{{ print_r($row,1) }}</pre></td>
                 </tr>
             @empty
                 <tr>
