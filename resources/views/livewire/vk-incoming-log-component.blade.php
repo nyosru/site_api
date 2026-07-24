@@ -112,7 +112,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="10" ><div style="max-height: 250px; overflow: auto;"><pre>{{ print_r($row,1) }}</pre></div></td>
+                    <td colspan="10" ><div style="max-height: 250px; overflow: auto;">
+                            {{ print_r($row->object->text,1) }}
+                            <pre>{{ print_r($row,1) }}</pre></div></td>
                 </tr>
             @empty
                 <tr>
